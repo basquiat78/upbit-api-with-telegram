@@ -25,19 +25,12 @@ public class ScheduleListener {
 	private MarketScheduleService marketScheduleService;
 	
 	/**
-	 * app이 뜰 때 초기화 값을 세팅한다.
+	 * app이 뜰 때 초기화 값을 세팅하고 스케쥴 스타.
 	 */
 	@EventListener(ApplicationReadyEvent.class)
 	public void startApp() {
-		marketScheduleService.start();
-	}
-	
-	/**
-	 * app이 뜰 때 스케쥴을 구동시킨다.
-	 */
-	@EventListener(ApplicationReadyEvent.class)
-	public void quotationScheduling() {
 		marketService.setUpMarketAllStore();
+		marketScheduleService.start();
 	}
 	
 }
