@@ -107,5 +107,89 @@ https://docs.upbit.com/v1.0.3/reference
 
 업비트의 경우에는 발급 받을 때 해당 토큰에 대한 권한을 설정할 수 있다. 나는 나의 자산만 조회할 예정이라 계좌 조회만 체크하고 발급 받았다.
 
-만일 자동매매프로그램을 염두해 두고 있다면 모든 것을 체크해야하며 특정 IP만 접근하도록 설정하는게 안전하다.
+만일 자동매매프로그램을 염두해 두고 있다면 모든 것을 체크해야하며 특정 IP만 접근하도록 설정하는게 안전하다.    
 
+# Usage    
+생성한 봇 채팅방으로 들어간다.
+
+![실행이미지](https://github.com/basquiat78/upbit-api-with-telegram/blob/quotation-api-v0.1/capture/capture3.png)    
+1. //ticker [marketName]
+커맨드는 //ticker 이고 구분자는 " ", 즉 공백을 넣고 뒤에 마켓명,예를 들면 BTC-XRP를 넣는다.
+
+![실행이미지](https://github.com/basquiat78/upbit-api-with-telegram/blob/quotation-api-v0.1/capture/capture4.png)  
+2. //ticker [marketName],[marketName] ...
+여러개의 마켓 시세 조회시에는 구분자 ",", 즉 콤마로 여러개의 마켓명, 예를 들면 BTC-XRP,BTC-ETH처럼 넣는다.
+
+## 오류 처리
+![실행이미지](https://github.com/basquiat78/upbit-api-with-telegram/blob/quotation-api-v0.1/capture/capture5.png)   
+1. 마켓명을 넣지 않을 경우
+
+![실행이미지](https://github.com/basquiat78/upbit-api-with-telegram/blob/quotation-api-v0.1/capture/capture6.png)   
+2. 마켓명중 하나가 잘못되거나 업비트 마켓에 없는 경우
+
+# Setup
+
+[See application.yml](https://github.com/basquiat78/upbit-api-with-telegram/blob/quotation-api-v0.1/src/main/resources/application.yml)
+
+``` 
+spring:
+  profiles:
+    active: local
+
+---
+spring:
+  profiles: local
+
+#logging
+logging:
+  file: logs/local-logging-file.log
+  level:
+    root: INFO
+    org:
+      springframework:
+        batch: DEBUG
+  pattern:
+    # console에 찍히는 로그 형식 정의
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    # console에서 로그는 위에 형식으로 찍히지만 파일로 씌여질 때 해당 패턴으로 찍는다. 
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+# ScheduleConfiguration thread pool size setup
+thread:
+  pool:
+    size: 4
+
+# defaul schedule rate 5 second
+schedule:
+  market:
+    cron: '*/60 * * * * *'
+  ticker:
+    cron: '*/5 * * * * *'
+  
+# upbit information
+# upbit access key and secret key
+upbit:
+  api:
+    url: https://api.upbit.com
+    version: /v1
+  access:
+    key: <Your Upbit Access Key>
+  secret:
+    key: <Your Upbit Secret Key>
+
+telegram:
+  api:
+    token: <Your Telegram Api Token>
+  bot:
+    name: <Your Telegram Bot Name>
+  chat:
+    id: <Your Telegram Bot Chat Id>
+  
+``` 
+
+위 사전 준비에서 얻은 값들을 세팅한다.    
+참고로 telegram.bot.name은 _bot 또는 _Bot이 붙은 이름이다.
+
+# Next 
+
+나의 자산을 조회하는 로직과 텔레봇으로 응답형 리플라이가 아닌 특정 메세지를 계속적으로 보내거나 원하는 메세지를 보내는 부분 추가
