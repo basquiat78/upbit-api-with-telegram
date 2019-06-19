@@ -2,4 +2,4 @@
 upbit api with telegram bot
 
 
-# 시세 캔들 조
+# 시세 캔들 조회
