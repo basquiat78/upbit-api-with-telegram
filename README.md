@@ -61,6 +61,7 @@ https://api.telegram.org/bot{your_api_token}/getUpdates
 
 이 주소를 날리기 전에 봇 채팅방으로 들어가서 /start를 눌러주고 아무 말이나 입력하고 위 주소로 다시 조회해 보자.    
 
+
 ``` 
 {
 	ok: true,
@@ -86,7 +87,7 @@ https://api.telegram.org/bot{your_api_token}/getUpdates
 		}
 	}]
 }
-```  
+```
 
 # Upbit API    
 
