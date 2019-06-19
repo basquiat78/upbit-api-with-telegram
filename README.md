@@ -185,7 +185,8 @@ telegram:
   chat:
     id: <Your Telegram Bot Chat Id>
   
-``` 
+```
+
 
 위 사전 준비에서 얻은 값들을 세팅한다.    
 참고로 telegram.bot.name은 _bot 또는 _Bot이 붙은 이름이다.
