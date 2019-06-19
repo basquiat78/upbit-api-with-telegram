@@ -33,20 +33,27 @@ public class BotAction {
 		String fromMessage = update.getMessage().getText();
 		if(fromMessage.contains(ActionEnum.TICKER.command)) { // 커맨드 체크.
 			TickerService tickerService = (TickerService) context.getBean(ActionEnum.TICKER.serviceName);
-			String marketNames = fromMessage.split(DelimiterEnum.SPACE.character)[1];
-			
-			Map<String, String> map = CommonUtils.validateMarketName(marketNames.split(DelimiterEnum.COMMA.character));
-			
-			if(map.containsKey(ActionEnum.INVALID.name())) { // 유효하지 않는 또는 잘못 입력한 마켓명을 텔레그램으로 메세지를 보낸다.
-				service.sendMessage(map.get(ActionEnum.INVALID.name()));
+
+			try {
+				String marketNames = fromMessage.split(DelimiterEnum.SPACE.character)[1];
+				
+				Map<String, String> map = CommonUtils.validateMarketName(marketNames.split(DelimiterEnum.COMMA.character));
+				
+				if(map.containsKey(ActionEnum.INVALID.name())) { // 유효하지 않는 또는 잘못 입력한 마켓명을 텔레그램으로 메세지를 보낸다.
+					service.sendMessage(map.get(ActionEnum.INVALID.name()));
+				}
+				
+				if(map.containsKey(ActionEnum.VALID.name())) {
+					tickerService.getTicker(map.get(ActionEnum.VALID.name())).doOnError(e -> service.sendMessage(e.getMessage() + " : Check Your Market Name"))
+																		   	 .subscribe(tickerInfo -> {
+																								service.sendMessage(CommonUtils.convertJsonStringFromObject(tickerInfo));	
+																		   	 });
+				}
+			} catch(ArrayIndexOutOfBoundsException e) {
+				service.sendMessage("마켓 정보가 없습니다.");
 			}
 			
-			if(map.containsKey(ActionEnum.VALID.name())) {
-				tickerService.getTicker(map.get(ActionEnum.VALID.name())).doOnError(e -> service.sendMessage(e.getMessage() + " : Check Your Market Name"))
-																	   	 .subscribe(tickerInfo -> {
-																							service.sendMessage(CommonUtils.convertJsonStringFromObject(tickerInfo));	
-																	   	 });
-			}
+			
 		}
 	}
 
