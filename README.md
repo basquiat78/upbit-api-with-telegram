@@ -1,2 +1,6 @@
 # upbit-api-with-telegram
-Upbit API With Telegram
+upbit api with telegram bot
+
+
+# 일단 Telegram bot을 생성하자.
+
