@@ -1,4 +1,4 @@
-package io.basquiat.quotation.domain.response;
+package io.basquiat.quotation.domain.response.market;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

@@ -1,4 +1,4 @@
-package io.basquiat.quotation.common.util;
+package io.basquiat.common.util;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -14,8 +14,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import io.basquiat.quotation.common.code.ActionEnum;
-import io.basquiat.quotation.common.code.DelimiterEnum;
+import io.basquiat.common.code.ActionEnum;
+import io.basquiat.common.code.DelimiterEnum;
 import io.basquiat.quotation.domain.MarketAllStore;
 import io.micrometer.core.instrument.util.StringUtils;
 
@@ -152,7 +152,7 @@ public class CommonUtils {
 																					{
 																					return MarketAllStore.getMarketAllStore().entrySet()
 																															 .stream()
-																												             .filter(marketAll -> marketAll.getKey().equals(marketName))
+																												             .filter(marketAll -> marketAll.getKey().equals(marketName.trim()))
 																												             .map(marketAll -> {
 																												            	 			return marketAll.getKey();
 																												             

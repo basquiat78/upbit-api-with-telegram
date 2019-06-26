@@ -1,10 +1,10 @@
-package io.basquiat.quotation.common.code;
+package io.basquiat.common.code;
 
 import java.util.Arrays;
 
 /**
  * 
- * 구분자 enum type 정
+ * 구분자 enum type 정보
  * 
  * Character | Html Entity
  * 

@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import io.basquiat.quotation.domain.response.MarketAll;
+import io.basquiat.quotation.domain.response.market.MarketAll;
 
 /**
  * 

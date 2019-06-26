@@ -59,6 +59,10 @@ public class BasquiatTelegramBot extends TelegramLongPollingBot implements Teleg
 		return telegramToken;
 	}
 
+	/**
+	 * 텔레그램 기존 방식은 onUpdateReceived에서 update가 들어올 때 아래와 같은 방식으로 보내게 되어 있다.
+	 * TelegramMessageInterface를 통해서 어떤 상황에서도 메세지를 보낼 수 있게 인터페이스 구현으로 빼낸다.
+	 */
 	@Override
 	public void sendMessage(String message) {
 		SendMessage sendMessage = new SendMessage();

@@ -8,9 +8,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import io.basquiat.quotation.common.code.QuotationApiUri;
+import io.basquiat.common.code.QuotationApiUri;
+import io.basquiat.common.exception.ApiException;
 import io.basquiat.quotation.domain.MarketAllStore;
-import io.basquiat.quotation.domain.response.MarketAll;
+import io.basquiat.quotation.domain.response.market.MarketAll;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -36,6 +37,28 @@ public class MarketService {
 	private WebClient.Builder webClientBuilder;
 	
 	/**
+	 * 
+	 * get MarketAll From upbit
+	 * 
+	 * @return Flux<MarketAll>
+	 */
+	public Flux<MarketAll> getMarketAll() {
+		return webClientBuilder.baseUrl(UPBIT_API_URL + UPBIT_API_VERSION)
+							   .build()
+							   .get()
+							   .uri(QuotationApiUri.MARKET_ALL.URI)
+							   .exchange()
+							   .doOnSuccess(cr -> log.info(cr.headers().asHttpHeaders().get("Remaining-Req").get(0)))
+							   .flatMapMany(cr -> {
+								 				 	if(cr.statusCode().is4xxClientError()) {
+									 					 return cr.bodyToMono(String.class).flatMap(body -> Mono.error(new ApiException(cr.statusCode(), body)) );
+									 				 }
+									 				 return cr.bodyToFlux(MarketAll.class);
+							   					  }
+							   );
+	}
+	
+	/**
 	 * on meoery marketAll list from upbit
 	 * @return Mono<Void>
 	 */
@@ -58,10 +81,7 @@ public class MarketService {
 	 * @return Mono<Void>
 	 */
 	public Mono<Void> setUpMarketAllStore() {
-		Flux<MarketAll> flux = webClientBuilder.build().get()
-									    			   .uri(UPBIT_API_URL + UPBIT_API_VERSION + QuotationApiUri.MARKET_ALL.URI)
-													   .retrieve()
-													   .bodyToFlux(MarketAll.class);
+		Flux<MarketAll> flux = this.getMarketAll();
 		flux.collectList().doOnNext(marketAllList -> this.marketAllOnMemory(marketAllList)).subscribe();
 		return Mono.empty();
 	}

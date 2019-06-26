@@ -5,17 +5,21 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import io.basquiat.quotation.common.code.QuotationApiUri;
-import io.basquiat.quotation.domain.response.Ticker;
+import io.basquiat.common.code.QuotationApiUri;
+import io.basquiat.common.exception.ApiException;
+import io.basquiat.quotation.domain.response.ticker.Ticker;
+import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * 
  * created by basquiat
  *
- * 현재가 정보 서비
+ * 현재가 정보 서비스
  *
  */
+@Slf4j
 @Service("ticker")
 public class TickerService {
 
@@ -38,10 +42,19 @@ public class TickerService {
 	 * @return Flux<Ticker>
 	 */
 	public Flux<Ticker> getTicker(String market) {
-		return webClientBuilder.build().get()
-						 			   .uri(UPBIT_API_URL + UPBIT_API_VERSION + QuotationApiUri.TICKER.URI, market)
-									   .retrieve()
-									   .bodyToFlux(Ticker.class);
+		return webClientBuilder.baseUrl(UPBIT_API_URL + UPBIT_API_VERSION)
+							   .build()
+							   .get()
+				 			   .uri(QuotationApiUri.TICKER.URI, market)
+				 			   .exchange()
+							   .doOnSuccess(cr -> log.info(cr.headers().asHttpHeaders().get("Remaining-Req").get(0)))
+							   .flatMapMany(cr -> {
+								 				 	if(cr.statusCode().is4xxClientError()) {
+									 					 return cr.bodyToMono(String.class).flatMap(body -> Mono.error(new ApiException(cr.statusCode(), body)) );
+									 				 }
+									 				 return cr.bodyToFlux(Ticker.class);
+							   					  }
+							   );
 	}
-	
+
 }
