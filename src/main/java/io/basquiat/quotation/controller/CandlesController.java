@@ -11,6 +11,7 @@ import io.basquiat.quotation.domain.response.candles.Days;
 import io.basquiat.quotation.domain.response.candles.Minutes;
 import io.basquiat.quotation.domain.response.candles.WeeksAndMonths;
 import io.basquiat.quotation.service.CandlesService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import reactor.core.publisher.Flux;
 
@@ -23,20 +24,21 @@ import reactor.core.publisher.Flux;
  */
 @RestController
 @RequestMapping("/api/candles")
+@Api(value = "Candles Controller", tags = {"Upbit Chart Data Controller"})
 public class CandlesController {
 
 	@Autowired
 	private CandlesService candlesService;
 	
 	/**
-	 * 분봉 캔들 챠트
+	 * 분봉 캔들 차트
 	 * @param unit
 	 * @param market
 	 * @param to
 	 * @param count
 	 * @return Flux<Minutes>
 	 */
-	@ApiOperation(value = "1분 캔들 챠트")
+	@ApiOperation(value = "분(Minute) 캔들 차트 데이터")
 	@GetMapping("/minutes/{unit}")
 	public Flux<Minutes> minutesCandle(@PathVariable("unit") int unit,
 									   @RequestParam(name = "market", required = true) String market,
@@ -46,14 +48,14 @@ public class CandlesController {
 	}
 	
 	/**
-	 * 일봉 캔들 챠트
+	 * 일봉 캔들 차트
 	 * @param market
 	 * @param to
 	 * @param count
 	 * @param convertingPriceUnit
 	 * @return Flux<Days>
 	 */
-	@ApiOperation(value = "일 캔들 챠트")
+	@ApiOperation(value = "일(Day) 캔들 차트 데이터")
 	@GetMapping("/days")
 	public Flux<Days> daysCandle(@RequestParam(name = "market", required = true) String market,
 							   	 @RequestParam(name = "to", required = false) String to,
@@ -63,12 +65,13 @@ public class CandlesController {
 	}
 	
 	/**
-	 * 주봉 캔들 챠트
+	 * 주봉 캔들 차트
 	 * @param market
 	 * @param to
 	 * @param count
 	 * @return Flux<WeeksAndMonths>
 	 */
+	@ApiOperation(value = "주(Week) 캔들 차트 데이터")
 	@GetMapping("/weeks")
 	public Flux<WeeksAndMonths> weeksCandle(@RequestParam(name = "market", required = true) String market,
 									   	 	@RequestParam(name = "to", required = false) String to,
@@ -77,12 +80,13 @@ public class CandlesController {
 	}
 	
 	/**
-	 * 월봉 캔들 챠트
+	 * 월봉 캔들 차트
 	 * @param market
 	 * @param to
 	 * @param count
 	 * @return Flux<WeeksAndMonths>
 	 */
+	@ApiOperation(value = "월(Month) 캔들 차트 데이터")
 	@GetMapping("/months")
 	public Flux<WeeksAndMonths> monthsCandle(@RequestParam(name = "market", required = true) String market,
 										   	 @RequestParam(name = "to", required = false) String to,
