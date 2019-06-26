@@ -6,6 +6,10 @@ spring:
 spring:
   profiles: local
 
+server:
+  error:
+    include-stacktrace: on-trace-param
+    
 #logging
 logging:
   file: logs/local-logging-file.log
