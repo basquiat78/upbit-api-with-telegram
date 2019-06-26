@@ -2,10 +2,6 @@ spring:
   profiles:
     active: local
 
-server:
-  error:
-    include-stacktrace: on-trace-param
-    
 ---
 spring:
   profiles: local
@@ -43,15 +39,15 @@ upbit:
     url: https://api.upbit.com
     version: /v1
   access:
-    key: bpnHHb6tcVxK0jutWjUOIsM6eVeyIl5FWxgSgvxi
+    key: <Your Upbit Access Key>
   secret:
-    key: ZZlUJxIABs7PpWolFphxco2CZxXifNqjxyaxQLka
+    key: <Your Upbit Secret Key>
 
 telegram:
   api:
-    token: 830856328:AAGlYZYu74S6UiooG_rrt4yJO_N9oN4Ta78
+    token: <Your Telegram Api Token>
   bot:
-    name: Basquiat_bot
+    name: <Your Telegram Bot Name>
   chat:
-    id: 354942933
+    id: <Your Telegram Bot Chat Id>
   
