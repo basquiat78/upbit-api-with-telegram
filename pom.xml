@@ -20,8 +20,17 @@
 		<java.version>1.8</java.version>
 		<jjwt.version>0.9.1</jjwt.version>
 		<telegram.bot.version>4.1.2</telegram.bot.version>
+		<swagger.version>3.0.0-SNAPSHOT</swagger.version>
 		<maven-jar-plugin.version>3.1.1</maven-jar-plugin.version> <!-- because spring boot 2.1.5 version bug, downgrade maven plugin version -->
 	</properties>
+
+	<repositories>
+		<repository>
+			<id>jfrog-snapshots</id>
+			<name>jfrog Repository for Maven</name>
+			<url>http://oss.jfrog.org/artifactory/oss-snapshot-local</url>
+		</repository>
+	</repositories>
 
 	<dependencies>
 
@@ -59,6 +68,26 @@
 			<artifactId>telegrambots-spring-boot-starter</artifactId>
 			<version>${telegram.bot.version}</version>
 		</dependency>
+
+		<!-- swagger 3 -->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>${swagger.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>${swagger.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-spring-webflux</artifactId>
+			<version>${swagger.version}</version>
+		</dependency>
+
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

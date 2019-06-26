@@ -11,6 +11,7 @@ import io.basquiat.quotation.domain.response.candles.Days;
 import io.basquiat.quotation.domain.response.candles.Minutes;
 import io.basquiat.quotation.domain.response.candles.WeeksAndMonths;
 import io.basquiat.quotation.service.CandlesService;
+import io.swagger.annotations.ApiOperation;
 import reactor.core.publisher.Flux;
 
 /**
@@ -35,6 +36,7 @@ public class CandlesController {
 	 * @param count
 	 * @return Flux<Minutes>
 	 */
+	@ApiOperation(value = "1분 캔들 챠트")
 	@GetMapping("/minutes/{unit}")
 	public Flux<Minutes> minutesCandle(@PathVariable("unit") int unit,
 									   @RequestParam(name = "market", required = true) String market,
@@ -51,6 +53,7 @@ public class CandlesController {
 	 * @param convertingPriceUnit
 	 * @return Flux<Days>
 	 */
+	@ApiOperation(value = "일 캔들 챠트")
 	@GetMapping("/days")
 	public Flux<Days> daysCandle(@RequestParam(name = "market", required = true) String market,
 							   	 @RequestParam(name = "to", required = false) String to,
