@@ -4,11 +4,26 @@ upbit api with telegram bot
 
 # Exchange API
 
-Accounts
-
-See http://localhost:8080/swagger-ui.html
+## Accounts
  
 업비트 access key와 screte key를 이용해 jwt토큰을 생성하고 헤더에 담아서 업비트에 요청하는 API와 외부 API로 컨트롤러를 통해서 헤더에 담아 처리하는 컨트롤러 추가
+
+## Order
+
+### OrderChance
+
+주문 가능 정보 조회 API 완료.
+
+See http://localhost:8080/swagger-ui.html
+
+
+업비트의 인증 가능한 요청 만들기의 스펙에 의거해 만듬.
+
+CryptoUtils 추가
+JwtUtils 수정
+
+# Next
+주문과 관련된 API 완성, 단 실제 주문과 주문 취소는 구현만 하고 테스트는 하지 못할 듯....
 
 # Telegram Usage
 
