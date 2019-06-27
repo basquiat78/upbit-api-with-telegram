@@ -28,6 +28,8 @@ JwtUtils 수정
 참 이럴 때는 NodeJs가 확실히 편하다.
 업비트에서도 관련 API 예제는 자바만 쏙 빼놓았다. 하긴 귀찮긴 하다.....
 
+다만 스프링 부트의 웹플럭스의 WebClient가 아닌 HttpURLConnection을 활용해 먼저 테스트했던 만큼 관련 소스도 함께 올릴 예정이다.
+
 
 # Telegram Usage
 
