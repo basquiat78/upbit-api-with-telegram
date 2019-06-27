@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 
 /**
  * 
- * Common Candle Response Domain
+ * Common Candle Response Domain Immutable
  * 
  * created by basquiat
  *

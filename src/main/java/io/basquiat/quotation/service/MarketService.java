@@ -18,9 +18,9 @@ import reactor.core.publisher.Mono;
 
 /**
  * 
- * created by basquiat
- *
  * 업비트에서 거래 가능한 마켓 목록
+ * 
+ * created by basquiat
  *
  */
 @Slf4j
@@ -51,9 +51,9 @@ public class MarketService {
 							   .doOnSuccess(cr -> log.info(cr.headers().asHttpHeaders().get("Remaining-Req").get(0)))
 							   .flatMapMany(cr -> {
 								 				 	if(cr.statusCode().is4xxClientError()) {
-									 					 return cr.bodyToMono(String.class).flatMap(body -> Mono.error(new ApiException(cr.statusCode(), body)) );
+								 				 		return cr.bodyToMono(String.class).flatMap(body -> Mono.error(new ApiException(cr.statusCode(), body)) );
 									 				 }
-									 				 return cr.bodyToFlux(MarketAll.class);
+								 				 	return cr.bodyToFlux(MarketAll.class);
 							   					  }
 							   );
 	}

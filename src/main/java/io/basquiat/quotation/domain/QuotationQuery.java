@@ -33,19 +33,15 @@ public class QuotationQuery {
 	/** 종가 환산 화폐 단위 (생략 가능, KRW로 명시할 시 원화 환산 가격을 반환.) */
 	private String convertingPriceUnit;
 	
+	/** 페이지네이션 커서 (sequentialId) */
+	private String cursor;
+	
 	/**
 	 * domain정보로 uri에 붙을 queryparam을 만든다.
 	 * @return String
 	 */
 	public String generateQueryParam() {
 		return CommonUtils.createQueryParam(this); 
-	}
-	
-	/**
-	 * 
-	 */
-	public void adjustURLEncoding() {
-		this.to = CommonUtils.encodingURL(to);
 	}
 	
 }

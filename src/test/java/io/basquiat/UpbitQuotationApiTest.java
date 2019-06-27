@@ -10,10 +10,14 @@ import io.basquiat.quotation.domain.response.candles.Days;
 import io.basquiat.quotation.domain.response.candles.Minutes;
 import io.basquiat.quotation.domain.response.candles.WeeksAndMonths;
 import io.basquiat.quotation.domain.response.market.MarketAll;
+import io.basquiat.quotation.domain.response.orderbook.OrderBook;
 import io.basquiat.quotation.domain.response.ticker.Ticker;
+import io.basquiat.quotation.domain.response.trades.TradesTick;
 import io.basquiat.quotation.service.CandlesService;
 import io.basquiat.quotation.service.MarketService;
+import io.basquiat.quotation.service.OrderBookService;
 import io.basquiat.quotation.service.TickerService;
+import io.basquiat.quotation.service.TradesService;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -29,6 +33,12 @@ public class UpbitQuotationApiTest {
 	
 	@Autowired
 	private TickerService tickerService;
+	
+	@Autowired
+	private TradesService tradesService;
+	
+	@Autowired
+	private OrderBookService orderBookService;
 	
 	//@Test
 	public void tickerAPICallTest() {
@@ -75,12 +85,30 @@ public class UpbitQuotationApiTest {
 					.verifyComplete();
 	}
 	
-	@Test
+	//@Test
 	public void monthsOfCandleAPICallTest() {
 		Flux<WeeksAndMonths> flux = candlesService.getMonthsOfCandles("BTC-ETH", null, 30);
 		StepVerifier.create(flux)
 					.expectNextMatches(month -> "BTC-ETH".equals(month.getMarket()))
 					.expectNextCount(29)
+					.verifyComplete();
+	}
+	
+	//@Test
+	public void tradeTicksAPICallTest() {
+		Flux<TradesTick> flux = tradesService.getTradesTicks("BTC-ETH", null, 3, null);
+		StepVerifier.create(flux)
+					.expectNextMatches(tradesTicks -> "BTC-ETH".equals(tradesTicks.getMarket()))
+					.expectNextCount(2)
+					.verifyComplete();
+	}
+	
+	@Test
+	public void orderBookAPICallTest() {
+		Flux<OrderBook> flux = orderBookService.getOrderBook("BTC-ETH,BTC-XRP");
+		StepVerifier.create(flux)
+					.expectNextMatches(orderBook -> "BTC-ETH".equals(orderBook.getMarket()))
+					.expectNextCount(1)
 					.verifyComplete();
 	}
 	

@@ -9,7 +9,7 @@ import lombok.Value;
 
 /**
  * 
- * 일(day) 봉 응답 도메인
+ * 일(day) 봉 응답 도메인 Immutable
  * 
  * created by basquiat
  *

@@ -8,7 +8,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Value;
 
 /**
- * 주/월 단위 응답 도메인
+ * 
+ * 주/월 단위 응답 도메인 Immutable
+ * 
  * created by basquiat
  *
  */

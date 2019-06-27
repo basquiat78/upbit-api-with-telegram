@@ -8,7 +8,7 @@ import lombok.Value;
 
 /**
  * 
- * 분 단위 봉 응답 도메
+ * 분 단위 봉 응답 도메인 Immutable
  * 
  * created by basquiat
  *
