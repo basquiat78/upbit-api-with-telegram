@@ -21,7 +21,7 @@ public enum ActionEnum {
 	
 	CANDLES("//candles", "candles"),
 	
-	ACCOUNTS("//accounts", "accounts");;
+	ACCOUNTS("//accounts", "accounts");
 	
 	public String command;
 	

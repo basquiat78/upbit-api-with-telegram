@@ -1,4 +1,4 @@
-package io.basquiat.exchange.domain;
+package io.basquiat.exchange.domain.response.account;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

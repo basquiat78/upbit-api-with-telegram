@@ -8,7 +8,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import io.basquiat.common.code.ExchangeApiUri;
 import io.basquiat.common.exception.ApiException;
 import io.basquiat.common.util.JwtUtils;
-import io.basquiat.exchange.domain.Account;
+import io.basquiat.exchange.domain.response.account.Account;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -48,9 +48,8 @@ public class AccountService {
 	 * @return Flux<Account>
 	 */
 	public Flux<Account> getAccountsWithoutRequestHeader(){
-		String jwt = JwtUtils.createJwt(UPBIT_ACCESS_KEY, UPBIT_SECRET_KEY);
+		String jwt = JwtUtils.createJwtWithoutQueryParameters(UPBIT_ACCESS_KEY, UPBIT_SECRET_KEY);
 		return this.getAccountsWithRequestHeader(jwt);
-		
 	}
 
 	/**
@@ -60,19 +59,19 @@ public class AccountService {
 	 */
 	public Flux<Account> getAccountsWithRequestHeader(String jwt){
 		return webClientBuilder.baseUrl(UPBIT_API_URL + UPBIT_API_VERSION)
-				   .build()
-				   .get()
-	 			   .uri(ExchangeApiUri.ACCOUNTS.URI)
-	 			   .header("Authorization", jwt)
-	 			   .exchange()
-				   .doOnSuccess(cr -> log.info(cr.headers().asHttpHeaders().get("Remaining-Req").get(0)))
-				   .flatMapMany(cr -> {
-					 				 	if(cr.statusCode().is4xxClientError()) {
-					 				 		return cr.bodyToMono(String.class).flatMap(body -> Mono.error(new ApiException(cr.statusCode(), body)) );
-						 				 }
-					 				 	return cr.bodyToFlux(Account.class);
-				   					  }
-				   );
+							   .build()
+							   .get()
+				 			   .uri(ExchangeApiUri.ACCOUNTS.URI)
+				 			   .header("Authorization", jwt)
+				 			   .exchange()
+							   .doOnSuccess(cr -> log.info(cr.headers().asHttpHeaders().get("Remaining-Req").get(0)))
+							   .flatMapMany(cr -> {
+								 				 	if(cr.statusCode().is4xxClientError()) {
+								 				 		return cr.bodyToMono(String.class).flatMap(body -> Mono.error(new ApiException(cr.statusCode(), body)) );
+									 				 }
+								 				 	return cr.bodyToFlux(Account.class);
+							   					  }
+							   );
 		
 	}
 
