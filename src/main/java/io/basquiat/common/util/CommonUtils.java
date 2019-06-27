@@ -1,4 +1,4 @@
-package io.basquiat.quotation.common.util;
+package io.basquiat.common.util;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -10,14 +10,15 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+import org.springframework.util.StringUtils;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import io.basquiat.quotation.common.code.ActionEnum;
-import io.basquiat.quotation.common.code.DelimiterEnum;
+import io.basquiat.common.code.ActionEnum;
+import io.basquiat.common.code.DelimiterEnum;
 import io.basquiat.quotation.domain.MarketAllStore;
-import io.micrometer.core.instrument.util.StringUtils;
 
 /**
  * 
@@ -68,16 +69,20 @@ public class CommonUtils {
 	/**
 	 * 
 	 * url인코딩이 필요한 쿼리 파라미터 값의 경우 url encoding을 해준다.
+	 * 
 	 * @param paramValue
 	 * @return String
 	 */
 	public static String encodingURL(String paramValue) {
 		String encodedURL = null;
+		if(StringUtils.isEmpty(paramValue)) {
+			return paramValue;
+		}
+			
 		try {
 			encodedURL = URLEncoder.encode(paramValue, StandardCharsets.UTF_8.name());
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RuntimeException(e.getMessage());
 		}
 		return encodedURL;
 	}
@@ -152,7 +157,7 @@ public class CommonUtils {
 																					{
 																					return MarketAllStore.getMarketAllStore().entrySet()
 																															 .stream()
-																												             .filter(marketAll -> marketAll.getKey().equals(marketName))
+																												             .filter(marketAll -> marketAll.getKey().equals(marketName.trim()))
 																												             .map(marketAll -> {
 																												            	 			return marketAll.getKey();
 																												             
@@ -177,5 +182,5 @@ public class CommonUtils {
 		}
 		return result;
 	}
-	
+
 }

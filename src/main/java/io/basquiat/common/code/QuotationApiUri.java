@@ -1,4 +1,4 @@
-package io.basquiat.quotation.common.code;
+package io.basquiat.common.code;
 
 /**
  * 
@@ -13,16 +13,16 @@ public enum QuotationApiUri {
 	MARKET_ALL("/market/all", "마켓 코드 조회"),
 
 	/** Candle */
-	CANDLE_MINUTES("/candles/minutes/{minutes}", "분(Minute) 캔들"),
+	CANDLES_MINUTES("/candles/minutes/{minutes}", "minutes"),
 	
-	CANDLE_DAYS("/candles/days?market={market}", "일(Day) 캔들"),
+	CANDLES_DAYS("/candles/days", "days"),
 	
-	CANDLE_WEEKS("/candles/weeks?market={market}", "주(Week) 캔들"),
+	CANDLES_WEEKS("/candles/weeks", "weeks"),
 	
-	CANDLE_MONTHS("/candles/months?market={market}", "월(Month) 캔들"),
+	CANDLES_MONTHS("/candles/months", "months"),
 	
 	/** trade */
-	TRADE_TICK("/trades/ticks?market={market}", "당일 체결 내역"),
+	TRADE_TICK("/trades/ticks", "당일 체결 내역"),
 	
 	/** tick */
 	TICKER("/ticker?markets={market}", "현재가 정보"),

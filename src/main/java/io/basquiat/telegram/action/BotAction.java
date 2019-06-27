@@ -5,9 +5,9 @@ import java.util.Map;
 import org.springframework.context.ApplicationContext;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-import io.basquiat.quotation.common.code.ActionEnum;
-import io.basquiat.quotation.common.code.DelimiterEnum;
-import io.basquiat.quotation.common.util.CommonUtils;
+import io.basquiat.common.code.ActionEnum;
+import io.basquiat.common.code.DelimiterEnum;
+import io.basquiat.common.util.CommonUtils;
 import io.basquiat.quotation.service.TickerService;
 import io.basquiat.telegram.service.TelegramService;
 
@@ -17,18 +17,18 @@ import io.basquiat.telegram.service.TelegramService;
  *
  */
 public class BotAction {
-
+	
 	/**
 	 * 
 	 * 다음과 같은 방식으로 reply한다.
 	 * 1. 시세 조회
-	 *  -> //ticker BTC-EHT,BTC-XRP
+	 *  -> //ticker BTC-EHT, BTC-XRP or BTC-EHT,BTC-XRP
 	 * 
 	 * @param update
 	 * @param context
 	 */
 	public static void reply(Update update, ApplicationContext context) {
-		TelegramService service = (TelegramService) context.getBean(ActionEnum.TELEGRAM.serviceName);
+		TelegramService telegramService = (TelegramService) context.getBean(ActionEnum.TELEGRAM.serviceName);
 		// 넘어온 메세지
 		String fromMessage = update.getMessage().getText();
 		if(fromMessage.contains(ActionEnum.TICKER.command)) { // 커맨드 체크.
@@ -40,17 +40,17 @@ public class BotAction {
 				Map<String, String> map = CommonUtils.validateMarketName(marketNames.split(DelimiterEnum.COMMA.character));
 				
 				if(map.containsKey(ActionEnum.INVALID.name())) { // 유효하지 않는 또는 잘못 입력한 마켓명을 텔레그램으로 메세지를 보낸다.
-					service.sendMessage(map.get(ActionEnum.INVALID.name()));
+					telegramService.sendMessage(map.get(ActionEnum.INVALID.name()));
 				}
 				
 				if(map.containsKey(ActionEnum.VALID.name())) {
-					tickerService.getTicker(map.get(ActionEnum.VALID.name())).doOnError(e -> service.sendMessage(e.getMessage() + " : Check Your Market Name"))
+					tickerService.getTicker(map.get(ActionEnum.VALID.name())).doOnError(e -> telegramService.sendMessage(e.getMessage() + " : Check Your Market Name"))
 																		   	 .subscribe(tickerInfo -> {
-																								service.sendMessage(CommonUtils.convertJsonStringFromObject(tickerInfo));	
+																		   		 	telegramService.sendMessage(CommonUtils.convertJsonStringFromObject(tickerInfo));	
 																		   	 });
 				}
 			} catch(ArrayIndexOutOfBoundsException e) {
-				service.sendMessage("마켓 정보가 없습니다.");
+				telegramService.sendMessage("마켓 정보가 없습니다.");
 			}
 			
 			

@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
  * 
  * created by basquiat
  * 
- * 스케쥴 서비스. 시세를 가져오는 주기를 변경할 수 있는 서비
+ * 스케쥴 서비스. 시세를 가져오는 주기를 변경할 수 있는 서비스
  *
  */
 @Slf4j

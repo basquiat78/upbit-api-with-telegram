@@ -1,10 +1,11 @@
-package io.basquiat.quotation.common.code;
+package io.basquiat.common.code;
 
 import java.util.Arrays;
 
 /**
  * 
  * telegram bot request code
+ * 
  * created by basquiat
  *
  */
@@ -16,7 +17,9 @@ public enum ActionEnum {
 	
 	TELEGRAM("telegram", "telegram"),
 
-	TICKER("//ticker", "ticker");
+	TICKER("//ticker", "ticker"),
+	
+	CANDLES("//candles", "candles");
 	
 	public String command;
 	
@@ -37,9 +40,9 @@ public enum ActionEnum {
 	 * @param character
 	 * @return ActionEnum
 	 */
-	public static ActionEnum fromCharacter(String character) {
+	public static ActionEnum fromCharacter(String command) {
 		return Arrays.asList(ActionEnum.values()).stream()
-											   	 .filter( actionEnum -> actionEnum.command.equalsIgnoreCase(character) )
+											   	 .filter( actionEnum -> actionEnum.command.equalsIgnoreCase(command) )
 											   	 .map(actionEnumCode -> actionEnumCode)
 											   	 .findFirst().orElse(null);
     }
