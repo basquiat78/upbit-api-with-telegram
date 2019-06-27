@@ -25,6 +25,10 @@ JwtUtils 수정
 # Next
 주문과 관련된 API 완성, 단 실제 주문과 주문 취소는 구현만 하고 테스트는 하지 못할 듯....
 
+참 이럴 때는 NodeJs가 확실히 편하다.
+업비트에서도 관련 API 예제는 자바만 쏙 빼놓았다. 하긴 귀찮긴 하다.....
+
+
 # Telegram Usage
 
 ![실행이미지](https://github.com/basquiat78/upbit-api-with-telegram/blob/quotation-api-v0.1/capture/capture7.png)
