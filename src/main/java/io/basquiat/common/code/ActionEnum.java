@@ -19,7 +19,9 @@ public enum ActionEnum {
 
 	TICKER("//ticker", "ticker"),
 	
-	CANDLES("//candles", "candles");
+	CANDLES("//candles", "candles"),
+	
+	ACCOUNTS("//accounts", "accounts");;
 	
 	public String command;
 	
