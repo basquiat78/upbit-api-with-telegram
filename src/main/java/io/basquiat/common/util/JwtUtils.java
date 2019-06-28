@@ -63,7 +63,7 @@ public class JwtUtils {
 	 * @param apiAccessKey
 	 * @param apiSecretKey
 	 * @param queryParam
-	 * @return
+	 * @return String
 	 */
 	public static String createJwWithQueryParameters(String apiAccessKey, String apiSecretKey, String queryParam) {
 		// payload 생성
