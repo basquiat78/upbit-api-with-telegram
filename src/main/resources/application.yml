@@ -9,7 +9,7 @@ spring:
 server:
   error:
     include-stacktrace: on-trace-param
-    
+
 #logging
 logging:
   file: logs/local-logging-file.log
@@ -54,4 +54,7 @@ telegram:
     name: <Your Telegram Bot Name>
   chat:
     id: <Your Telegram Bot Chat Id>
-  
+  wakeup:
+    message: 'Hi, There! I Just Wake Up!'
+  sleep:
+    message: 'I will Sleep. See You Again!'

@@ -33,6 +33,7 @@ public class TelegramConfiguration {
 	public TelegramConfiguration(@Value("${telegram.api.token}") final String TELEGRAM_API_TOKEN, 
 								 @Value("${telegram.bot.name}") final String TELEGRAM_BOT_NAME,
 								 @Value("${telegram.chat.id}") final String CHAT_ID,
+								 @Value("${telegram.wakeup.message}") final String WAKEUP_MESSAGE,
 								 @Autowired final ApplicationContext context
 								) {
 		TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
@@ -41,6 +42,7 @@ public class TelegramConfiguration {
 			telegramBotsApi.registerBot(basquiatTelegramBot);
 			TelegramService service = new TelegramService(basquiatTelegramBot);
 			telegramService = service;
+			service.sendMessage(WAKEUP_MESSAGE);
 		} catch (TelegramApiException e) {
 			e.printStackTrace();
 		}
