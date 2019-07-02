@@ -18,18 +18,23 @@ public class AskAccount {
 
 	/** 화폐를 의미하는 영문 대문자 코드 */
 	private String currency;
+	
+	/** 평단가 기준 화폐 */
+	@JsonProperty("unit_currency")
+	private String unitCurrency;
 
 	/** 주문가능 금액/수량 */
-	private String balance;
-
-	/** 주문 중 묶여있는 금액/수량 */
-	private String locked;
-
+    private String balance;
+    
+    /** 주문 중 묶여있는 금액/수량 */
+    private String locked;
+    
 	/** 매수평균가 */
-	@JsonProperty("avg_krw_buy_price")
-	private String avgKrwBuyPrice;
-
+	@JsonProperty("avg_buy_price")
+	private String avgBuyPrice;
+	
 	/** 매수평균가 수정 여부 */
-	private boolean modified;
+	@JsonProperty("avg_buy_price_modified")
+	private boolean avgBuyPriceModified;
 
 }
