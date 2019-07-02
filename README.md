@@ -30,6 +30,11 @@ JwtUtils 수정
 스프링 부트의 웹플럭스를 사용하는 것이 아니라면 RestTemple이나 Retrofit2같은 라이브러리를 활용할 수 있다.
 위 방법은 심플하게 HttpURLConnection을 이용한 방법이다.
 
+# 업비트 API 변경 공지사항
+
+[Open API 변경사항 안내 (적용 일자 07/04 15:00)
+](https://docs.upbit.com/changelog/open-api-%EB%B3%80%EA%B2%BD%EC%82%AC%ED%95%AD-%EC%95%88%EB%82%B4-%EC%A0%81%EC%9A%A9-%EC%9D%BC%EC%9E%90-0704-1500)
+
 # Next
 주문과 관련된 API 완성, 단 실제 주문과 주문 취소는 구현만 하고 테스트는 하지 못할 듯....
 
