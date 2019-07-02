@@ -22,13 +22,19 @@ See http://localhost:8080/swagger-ui.html
 CryptoUtils 추가
 JwtUtils 수정
 
+
+#Add
+
+[See UpbitApiUsingHttpURLConnection.java](https://github.com/basquiat78/upbit-api-with-telegram/blob/exchange-api-v0.1/src/test/java/io/basquiat/UpbitApiUsingHttpURLConnection.java)
+
+스프링 부트의 웹플럭스를 사용하는 것이 아니라면 RestTemple이나 Retrofit2같은 라이브러리를 활용할 수 있다.
+위 방법은 심플하게 HttpURLConnection을 이용한 방법이다.
+
 # Next
 주문과 관련된 API 완성, 단 실제 주문과 주문 취소는 구현만 하고 테스트는 하지 못할 듯....
 
 참 이럴 때는 NodeJs가 확실히 편하다.
 업비트에서도 관련 API 예제는 자바만 쏙 빼놓았다. 하긴 귀찮긴 하다.....
-
-다만 스프링 부트의 웹플럭스의 WebClient가 아닌 HttpURLConnection을 활용해 먼저 테스트했던 만큼 관련 소스도 함께 올릴 예정이다.
 
 
 # Telegram Usage
