@@ -21,6 +21,7 @@
 		<jjwt.version>0.9.1</jjwt.version>
 		<telegram.bot.version>4.1.2</telegram.bot.version>
 		<swagger.version>3.0.0-SNAPSHOT</swagger.version>
+		<bcprov.version>1.62</bcprov.version>
 		<maven-jar-plugin.version>3.1.1</maven-jar-plugin.version> <!-- because spring boot 2.1.5 version bug, downgrade maven plugin version -->
 	</properties>
 
@@ -88,6 +89,11 @@
 			<version>${swagger.version}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcprov-jdk15on</artifactId>
+			<version>${bcprov.version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

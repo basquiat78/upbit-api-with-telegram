@@ -8,6 +8,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import io.basquiat.common.code.ActionEnum;
 import io.basquiat.common.code.DelimiterEnum;
 import io.basquiat.common.util.CommonUtils;
+import io.basquiat.exchange.service.AccountService;
 import io.basquiat.quotation.service.TickerService;
 import io.basquiat.telegram.service.TelegramService;
 
@@ -31,7 +32,7 @@ public class BotAction {
 		TelegramService telegramService = (TelegramService) context.getBean(ActionEnum.TELEGRAM.serviceName);
 		// 넘어온 메세지
 		String fromMessage = update.getMessage().getText();
-		if(fromMessage.contains(ActionEnum.TICKER.command)) { // 커맨드 체크.
+		if(fromMessage.contains(ActionEnum.TICKER.command)) { // 커맨드 체크. ticker 조회
 			TickerService tickerService = (TickerService) context.getBean(ActionEnum.TICKER.serviceName);
 
 			try {
@@ -53,8 +54,14 @@ public class BotAction {
 				telegramService.sendMessage("마켓 정보가 없습니다.");
 			}
 			
-			
+		} else if(fromMessage.contains(ActionEnum.ACCOUNTS.command)) { // 커맨드 체크. 나의 자산 조회
+			AccountService accountService = (AccountService) context.getBean(ActionEnum.ACCOUNTS.serviceName);
+			accountService.getAccountsWithoutRequestHeader().doOnError(e -> telegramService.sendMessage(e.getMessage()))
+													   	 	.subscribe(account -> {
+													   	 			telegramService.sendMessage(CommonUtils.convertJsonStringFromObject(account));	
+													   	 	});
 		}
+
 	}
 
 }
