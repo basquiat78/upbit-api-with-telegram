@@ -54,6 +54,10 @@ jUnit 테스트시 발생하는 텔레그램 BotSession was bound관련 에러�
 -> 해결 방법은 찾았지만 너무 느려서 주석만 처리함. 해당 라이브러리 깃헙 이슈에는 버그로 규정하고 있는데 아직 수정되지 않은 듯...
    차라리 그냥 서버를 껐다 키는게 더 빠를 듯...
 
+Exchange API중 주문 관련 API는 완료.
+
+출금 API를 위한 뉴 브랜치 생성 및 마스터 머지.   
+
 # Telegram Usage
 
 ![실행이미지](https://github.com/basquiat78/upbit-api-with-telegram/blob/quotation-api-v0.1/capture/capture7.png)
