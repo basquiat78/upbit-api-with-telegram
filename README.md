@@ -22,6 +22,14 @@ See http://localhost:8080/swagger-ui.html
 CryptoUtils 추가
 JwtUtils 수정
 
+## Order And Order List
+
+주문하기 와 주문 리스트 조회 API작성
+
+주문하기는 테스트 못함 (상상으로...)
+
+주문 리스트 조회는 테스트 완
+
 
 #Add
 
@@ -36,10 +44,12 @@ JwtUtils 수정
 ](https://docs.upbit.com/changelog/open-api-%EB%B3%80%EA%B2%BD%EC%82%AC%ED%95%AD-%EC%95%88%EB%82%B4-%EC%A0%81%EC%9A%A9-%EC%9D%BC%EC%9E%90-0704-1500)
 
 # Next
-주문과 관련된 API 완성, 단 실제 주문과 주문 취소는 구현만 하고 테스트는 하지 못할 듯....
-
 참 이럴 때는 NodeJs가 확실히 편하다.
 업비트에서도 관련 API 예제는 자바만 쏙 빼놓았다. 하긴 귀찮긴 하다.....
+
+jUnit 테스트시 발생하는 텔레그램 BotSession was bound관련 에러는 수정.
+
+하지만 spring-boot-devtools로 리소스 수정후 서버가 다시 뜰 때 발생하는 Error getting updates관련 에러는 지금 해결점을 찾고 있는 중...
 
 
 # Telegram Usage
