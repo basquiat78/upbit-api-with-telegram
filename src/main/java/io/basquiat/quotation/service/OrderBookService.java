@@ -33,13 +33,12 @@ public class OrderBookService {
 	private WebClient.Builder webClientBuilder;
 	
 	public Flux<OrderBook> getOrderBook(String market) {
-		
 		return webClientBuilder.baseUrl(UPBIT_API_URL + UPBIT_API_VERSION)
 							   .build()
 							   .get()
 				 			   .uri(QuotationApiUri.ORDERBOOK.URI, market)
 				 			   .exchange()
-							   .doOnSuccess(cr -> log.info(cr.headers().asHttpHeaders().get("Remaining-Req").get(0)))
+				 			   .doOnSuccess(cr -> log.info("Remaining-Req : " + cr.headers().asHttpHeaders().get("Remaining-Req").get(0)))
 							   .flatMapMany(cr -> {
 								 				 	if(cr.statusCode().is4xxClientError()) {
 								 				 		return cr.bodyToMono(String.class).flatMap(body -> Mono.error(new ApiException(cr.statusCode(), body)) );

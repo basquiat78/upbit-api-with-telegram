@@ -43,18 +43,52 @@ public class CommonUtils {
 																				   try {
 																					   if(index.get() == 0) {
 																						   if(field.get(object) != null) {
-																							   keyValue = DelimiterEnum.QUESTION_MARK.character 
-																									    + field.getName() 
-																									    + DelimiterEnum.EQUALS_SIGN.character 
-																									    + field.get(object);
+																							   if("uuids".equals(field.getName()) || "identifiers".equals(field.getName())) {
+																								   AtomicInteger flag = new AtomicInteger(0);
+																								   keyValue = Arrays.asList(((String) field.get(object)).split(","))
+																										   			.stream().map(s -> {
+																										   			 						if(flag.get() == 0) {
+																											   			 						flag.set(1);
+																											   			 						return DelimiterEnum.QUESTION_MARK.character
+																													   			 						+ field.getName()+"[]"
+																													   			 						+ DelimiterEnum.EQUALS_SIGN.character 
+																													   			 						+ s.trim();
+																											   			 					} else {
+																												   			 					return DelimiterEnum.AMPERSAND.character
+																													   			 						+ field.getName()+"[]"
+																													   			 						+ DelimiterEnum.EQUALS_SIGN.character 
+																													   			 						+ s.trim();
+																											   			 					}
+																										   			 					}
+																										   					 	  )
+																										   			 .collect(Collectors.joining(""));
+																							   } else {
+																								   keyValue = DelimiterEnum.QUESTION_MARK.character 
+																										    + field.getName() 
+																										    + DelimiterEnum.EQUALS_SIGN.character 
+																										    + field.get(object);
+																							   }
 																							   index.set(1);
 																						   }
 																					   } else {
 																						   if(field.get(object) != null) {
-																							   keyValue = DelimiterEnum.AMPERSAND.character 
-																									    + field.getName() 
-																									    + DelimiterEnum.EQUALS_SIGN.character 
-																									    + field.get(object);
+																							   if("uuids".equals(field.getName()) || "identifiers".equals(field.getName())) {
+																								   keyValue = Arrays.asList(((String) field.get(object)).split(","))
+																										   			.stream().map(s -> {
+																														   				return DelimiterEnum.AMPERSAND.character
+																											   			 						+ field.getName()+"[]"
+																											   			 						+ DelimiterEnum.EQUALS_SIGN.character 
+																											   			 						+ s.trim();
+																										   			 					}
+																										   					 	  )
+																										   			 .collect(Collectors.joining(""));
+																							   } else {
+																								   keyValue = DelimiterEnum.AMPERSAND.character 
+																										    + field.getName() 
+																										    + DelimiterEnum.EQUALS_SIGN.character 
+																										    + field.get(object);
+																								   
+																							   }
 																						   }
 																					   }
 																				   } catch(IllegalArgumentException | IllegalAccessException e) {

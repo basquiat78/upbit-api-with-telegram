@@ -28,15 +28,24 @@ public class AccountController {
 	private AccountService accountService;
 	
 	/**
-	 * 
+	 * 자산 조회 for api for owner
+	 * @return Flux<Account>
+	 */
+	@ApiOperation(value = "전체 계좌 조회")
+	@GetMapping("/accounts/owner")
+	public Flux<Account> accountsWithoutRequestHeader() {
+		return accountService.getAccountsWithoutRequestHeader();
+	}
+	
+	/**
 	 * 자산 조회 for api
-	 * 
+	 * @param jwt
 	 * @return Flux<Account>
 	 */
 	@ApiOperation(value = "전체 계좌 조회")
 	@GetMapping("/accounts")
-	public Flux<Account> accounts(@RequestHeader(name = "Authorization", required = true) String jwt) {
+	public Flux<Account> accountsWithRequestHeader(@RequestHeader(name = "Authorization", required = true) String jwt) {
 		return accountService.getAccountsWithRequestHeader(jwt);
 	}
-
+	
 }

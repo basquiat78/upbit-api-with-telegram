@@ -19,8 +19,7 @@ public enum AlgorithmEnum {
 	
 	/**
 	 * constructor
-	 * @param command
-	 * @param serviceName
+	 * @param algorithmName
 	 */
 	AlgorithmEnum(String algorithmName) {
 		this.algorithmName = algorithmName;
@@ -29,11 +28,11 @@ public enum AlgorithmEnum {
 	/**
 	 * from character, get ENUM
 	 * @param character
-	 * @return ActionEnum
+	 * @return AlgorithmEnum
 	 */
-	public static AlgorithmEnum fromCharacter(String algorithmName) {
+	public static AlgorithmEnum fromCharacter(String character) {
 		return Arrays.asList(AlgorithmEnum.values()).stream()
-											   	 	.filter( algorithmEnum -> algorithmEnum.algorithmName.equalsIgnoreCase(algorithmName) )
+											   	 	.filter( algorithmEnum -> algorithmEnum.algorithmName.equalsIgnoreCase(character) )
 											   	 	.map(algorithmEnumCode -> algorithmEnumCode)
 											   	 	.findFirst().orElse(null);
     }
