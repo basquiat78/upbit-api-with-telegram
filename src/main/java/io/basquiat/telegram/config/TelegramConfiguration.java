@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
@@ -36,6 +37,7 @@ public class TelegramConfiguration {
 								 @Value("${telegram.wakeup.message}") final String WAKEUP_MESSAGE,
 								 @Autowired final ApplicationContext context
 								) {
+		ApiContextInitializer.init();
 		TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
 		try {
 			BasquiatTelegramBot basquiatTelegramBot = new BasquiatTelegramBot(TELEGRAM_API_TOKEN, TELEGRAM_BOT_NAME, CHAT_ID, context);
