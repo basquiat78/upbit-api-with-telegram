@@ -1,6 +1,7 @@
 package io.basquiat.exchange.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,7 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.basquiat.common.util.CommonUtils;
 import io.basquiat.exchange.domain.ExchangeQuery;
+import io.basquiat.exchange.domain.response.order.IndividualOrder;
 import io.basquiat.exchange.domain.response.order.Order;
+import io.basquiat.exchange.domain.response.order.OrderCancel;
 import io.basquiat.exchange.domain.response.order.OrderChance;
 import io.basquiat.exchange.domain.response.order.OrderPlace;
 import io.basquiat.exchange.service.OrderService;
@@ -121,13 +124,13 @@ public class OrderController {
 													 @RequestParam(name = "order_by", required = false) String orderBy) {
 		// query param 생성
 		String queryParam = ExchangeQuery.builder().market(CommonUtils.encodingURL(market))
-													   .state(CommonUtils.encodingURL(state))
-													   .uuids(uuIds)
-													   .identifiers(identifiers)
-													   .page(page)
-													   .order_by(CommonUtils.encodingURL(orderBy))
-													   .build()
-													   .generateQueryParam();
+												   .state(CommonUtils.encodingURL(state))
+												   .uuids(uuIds)
+												   .identifiers(identifiers)
+												   .page(page)
+												   .order_by(CommonUtils.encodingURL(orderBy))
+												   .build()
+												   .generateQueryParam();
 		return orderService.getOrderListWithoutRequestHeader(queryParam);
 	}
 	
@@ -153,14 +156,100 @@ public class OrderController {
 												  @RequestHeader(name = "Authorization", required = true) String jwt) {
 		// query param 생성
 		String queryParam = ExchangeQuery.builder().market(CommonUtils.encodingURL(market))
-													   .state(CommonUtils.encodingURL(state))
-													   .uuids(uuIds)
-													   .identifiers(identifiers)
-													   .page(page)
-													   .order_by(CommonUtils.encodingURL(orderBy))
-													   .build()
-													   .generateQueryParam();
+												   .state(CommonUtils.encodingURL(state))
+												   .uuids(uuIds)
+												   .identifiers(identifiers)
+												   .page(page)
+												   .order_by(CommonUtils.encodingURL(orderBy))
+												   .build()
+												   .generateQueryParam();
 		return orderService.getOrderListWithRequestHeader(queryParam, jwt);
 	}
 	
+	/**
+	 * 
+	 * 개별 주문 조회 요청하기 for owner
+	 * 
+	 * uuid 혹은 identifier 둘 중 하나의 값이 반드시 포함되어야 합니다.
+	 * 
+	 * @param uuId
+	 * @param identifier
+	 * @return Mono<IndividualOrder>
+	 */
+	@ApiOperation(value = "개별 주문 조회 (for owner)")
+	@GetMapping("/order/owner")
+	public Mono<IndividualOrder> individualOrderWithoutRequestHeader(@ApiParam(value = "uuid 혹은 identifier 둘 중 하나의 값이 반드시 포함되어야 합니다.") 
+																	 @RequestParam(name = "uuid", required = false) String uuId,
+																	 @ApiParam(value = "uuid 혹은 identifier 둘 중 하나의 값이 반드시 포함되어야 합니다.") 
+														   		  	 @RequestParam(name = "identifier", required = false) String identifier) {
+		// query param 생성
+		String queryParam = ExchangeQuery.builder().uuid(CommonUtils.encodingURL(uuId))
+												   .identifier(CommonUtils.encodingURL(identifier))
+												   .build()
+												   .generateQueryParam();
+		return orderService.getIndividualOrderWithoutRequestHeader(queryParam);
+	}
+	
+	/**
+	 * 
+	 * 개별 주문 조회 요청하기
+	 * 
+	 * uuid 혹은 identifier 둘 중 하나의 값이 반드시 포함되어야 합니다.
+	 * 
+	 * @param uuId
+	 * @param identifier
+	 * @param jwt
+	 * @return Mono<IndividualOrder>
+	 */
+	@ApiOperation(value = "개별 주문 조회")
+	@GetMapping("/order")
+	public Mono<IndividualOrder> individualOrderWithRequestHeader(@ApiParam(value = "uuid 혹은 identifier 둘 중 하나의 값이 반드시 포함되어야 합니다.") 
+												   		  		  @RequestParam(name = "uuid", required = false) String uuId,
+												   		  		  @ApiParam(value = "uuid 혹은 identifier 둘 중 하나의 값이 반드시 포함되어야 합니다.") 
+												   				  @RequestParam(name = "identifier", required = false) String identifier,
+												   				  @RequestHeader(name = "Authorization", required = true) String jwt) {
+		// query param 생성
+		String queryParam = ExchangeQuery.builder().uuid(CommonUtils.encodingURL(uuId))
+												   .identifier(CommonUtils.encodingURL(identifier))
+												   .build()
+												   .generateQueryParam();
+		return orderService.getIndividualOrderWithRequestHeader(queryParam, jwt);
+	}
+
+	/**
+	 * 
+	 * 주문 취소 요청하기 for owner
+	 * 
+	 * @param uuId
+	 * @return Mono<OrderCancel>
+	 */
+	@DeleteMapping("/order/owner")
+	public Mono<OrderCancel> orderCancelWithoutRequestHeader(@ApiParam(value = "취소할 주문의 UUID") 
+															 @RequestParam(name = "uuid", required = true) String uuId) {
+		// query param 생성
+		String queryParam = ExchangeQuery.builder().uuid(CommonUtils.encodingURL(uuId))
+												   .build()
+												   .generateQueryParam();
+		return orderService.requestOrderCancelWithoutRequestHeader(queryParam);
+	}
+
+	/**
+	 * 
+	 * 주문 취소 요청하기
+	 * 
+	 * @param uuId
+	 * @param jwt
+	 * @return Mono<OrderCancel>
+	 */
+	@DeleteMapping("/order")
+	public Mono<OrderCancel> orderCancelWithoutRequestHeader(@ApiParam(value = "취소할 주문의 UUID") 
+															 @RequestParam(name = "uuid", required = true) String uuId,
+															 @RequestHeader(name = "Authorization", required = true) String jwt) {
+		// query param 생성
+		String queryParam = ExchangeQuery.builder().uuid(CommonUtils.encodingURL(uuId))
+												   .build()
+												   .generateQueryParam();
+		return orderService.requestOrderCancelWithRequestHeader(queryParam, jwt);
+	}
+
 }

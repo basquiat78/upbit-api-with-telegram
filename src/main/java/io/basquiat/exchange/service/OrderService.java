@@ -10,7 +10,9 @@ import io.basquiat.common.code.ExchangeApiUri;
 import io.basquiat.common.exception.ApiException;
 import io.basquiat.common.util.JwtUtils;
 import io.basquiat.exchange.domain.ExchangeQuery;
+import io.basquiat.exchange.domain.response.order.IndividualOrder;
 import io.basquiat.exchange.domain.response.order.Order;
+import io.basquiat.exchange.domain.response.order.OrderCancel;
 import io.basquiat.exchange.domain.response.order.OrderChance;
 import io.basquiat.exchange.domain.response.order.OrderPlace;
 import lombok.extern.slf4j.Slf4j;
@@ -146,6 +148,83 @@ public class OrderService {
 									 				 }
 								 				 	return cr.bodyToFlux(Order.class);
 							   					  }
+							   );
+	}
+
+	/**
+	 * 
+	 * 개별 주문 조회
+	 *	주문 UUID 를 통해 개별 주문건을 조회한다.
+	 * 
+	 * @param queryParam
+	 * @return Mono<IndividualOrder>
+	 */
+	public Mono<IndividualOrder> getIndividualOrderWithoutRequestHeader(String queryParam) {
+		String jwt = JwtUtils.createJwWithQueryParameters(UPBIT_ACCESS_KEY, UPBIT_SECRET_KEY, queryParam);
+		return this.getIndividualOrderWithRequestHeader(queryParam, jwt);
+	}
+
+	/**
+	 * 
+	 * 개별 주문 조회 with RequestHeader
+	 *	주문 UUID 를 통해 개별 주문건을 조회한다.
+	 * 
+	 * @param queryParam
+	 * @param jwt
+	 * @return Mono<IndividualOrder>
+	 */
+	public Mono<IndividualOrder> getIndividualOrderWithRequestHeader(String queryParam, String jwt) {
+		return webClientBuilder.baseUrl(UPBIT_API_URL + UPBIT_API_VERSION)
+							   .build()
+							   .get()
+				 			   .uri(ExchangeApiUri.INDIVIDUALORDER.URI + queryParam)
+				 			   .header("Authorization", jwt)
+				 			   .exchange()
+				 			   .doOnSuccess(cr -> log.info("X-Forwarded-Uri : " + cr.headers().asHttpHeaders().get("X-Forwarded-Uri").get(0)))
+							   .doOnSuccess(cr -> log.info("Remaining-Req : " + cr.headers().asHttpHeaders().get("Remaining-Req").get(0)))
+							   .flatMap(cr -> {
+							 				 	if(cr.statusCode().is4xxClientError()) {
+							 				 		return cr.bodyToMono(String.class).flatMap(body -> Mono.error(new ApiException(cr.statusCode(), body)) );
+								 				 }
+							 				 	return cr.bodyToMono(IndividualOrder.class);
+						   					  }
+							   );
+	}
+
+	/**
+	 * 
+	 * 주문 취소 접수
+	 *	주문 UUID를 통해 해당 주문에 대한 취소 접수를 한다.
+	 * 
+	 * @param queryParam
+	 * @return Mono<OrderCancel>
+	 */
+	public Mono<OrderCancel> requestOrderCancelWithoutRequestHeader(String queryParam) {
+		String jwt = JwtUtils.createJwWithQueryParameters(UPBIT_ACCESS_KEY, UPBIT_SECRET_KEY, queryParam);
+		return this.requestOrderCancelWithRequestHeader(queryParam, jwt);
+	}
+
+	/**
+	 * 
+	 * @param queryParam
+	 * @param jwt
+	 * @return Mono<OrderCancel>
+	 */
+	public Mono<OrderCancel> requestOrderCancelWithRequestHeader(String queryParam, String jwt) {
+		return webClientBuilder.baseUrl(UPBIT_API_URL + UPBIT_API_VERSION)
+							   .build()
+							   .get()
+				 			   .uri(ExchangeApiUri.INDIVIDUALORDER.URI + queryParam)
+				 			   .header("Authorization", jwt)
+				 			   .exchange()
+				 			   .doOnSuccess(cr -> log.info("X-Forwarded-Uri : " + cr.headers().asHttpHeaders().get("X-Forwarded-Uri").get(0)))
+							   .doOnSuccess(cr -> log.info("Remaining-Req : " + cr.headers().asHttpHeaders().get("Remaining-Req").get(0)))
+							   .flatMap(cr -> {
+							 				 	if(cr.statusCode().is4xxClientError()) {
+							 				 		return cr.bodyToMono(String.class).flatMap(body -> Mono.error(new ApiException(cr.statusCode(), body)) );
+							 				 	}
+							 				 	return cr.bodyToMono(OrderCancel.class);
+						   					  }
 							   );
 	}
 

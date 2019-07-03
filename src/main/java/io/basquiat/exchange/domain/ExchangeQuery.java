@@ -103,13 +103,15 @@ public class ExchangeQuery {
 	
 	/**
 	 * 간지나는 방법이 없나??
-	 * identifier, uuid관련 변수는 인코딩하지 않는다.
+	 * identifiers, uuids 변수는 인코딩하지 않는다.
 	 */
 	public void adjustEncode() {
 		this.market = CommonUtils.encodingURL(this.market);
 		this.side = CommonUtils.encodingURL(this.side);
 		this.volume = CommonUtils.encodingURL(this.volume);
 		this.price = CommonUtils.encodingURL(this.price);
+		this.uuid = CommonUtils.encodingURL(this.uuid);
+		this.identifier = CommonUtils.encodingURL(this.identifier);
 		this.ord_type = CommonUtils.encodingURL(this.ord_type);
 		this.order_by = CommonUtils.encodingURL(this.order_by);
 	}
