@@ -64,7 +64,8 @@ public class AccountService {
 				 			   .uri(ExchangeApiUri.ACCOUNTS.URI)
 				 			   .header("Authorization", jwt)
 				 			   .exchange()
-							   .doOnSuccess(cr -> log.info(cr.headers().asHttpHeaders().get("Remaining-Req").get(0)))
+				 			   .doOnSuccess(cr -> log.info("X-Forwarded-Uri : " + cr.headers().asHttpHeaders().get("X-Forwarded-Uri").get(0)))
+		 					   .doOnSuccess(cr -> log.info("Remaining-Req : " + cr.headers().asHttpHeaders().get("Remaining-Req").get(0)))
 							   .flatMapMany(cr -> {
 								 				 	if(cr.statusCode().is4xxClientError()) {
 								 				 		return cr.bodyToMono(String.class).flatMap(body -> Mono.error(new ApiException(cr.statusCode(), body)) );
