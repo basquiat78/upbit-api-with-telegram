@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import org.telegram.telegrambots.meta.generics.BotSession;
 
 import io.basquiat.telegram.service.BasquiatTelegramBot;
 import io.basquiat.telegram.service.TelegramService;
@@ -41,8 +42,8 @@ public class TelegramConfiguration {
 		TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
 		try {
 			BasquiatTelegramBot basquiatTelegramBot = new BasquiatTelegramBot(TELEGRAM_API_TOKEN, TELEGRAM_BOT_NAME, CHAT_ID, context);
-			telegramBotsApi.registerBot(basquiatTelegramBot);
-			TelegramService service = new TelegramService(basquiatTelegramBot);
+			BotSession botSession = telegramBotsApi.registerBot(basquiatTelegramBot);
+			TelegramService service = new TelegramService(basquiatTelegramBot, botSession);
 			telegramService = service;
 			service.sendMessage(WAKEUP_MESSAGE);
 		} catch (TelegramApiException e) {

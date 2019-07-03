@@ -1,5 +1,7 @@
 package io.basquiat.telegram.service;
 
+import org.telegram.telegrambots.meta.generics.BotSession;
+
 /**
  * 
  * TelegramService
@@ -14,12 +16,15 @@ public class TelegramService {
 
 	private TelegramMessageInterface telegramMessageInterface;
 	
+	private BotSession botSession;
+	
 	/**
 	 * constructor
 	 * @param telegramMessageInterface
 	 */
-	public TelegramService(TelegramMessageInterface telegramMessageInterface) {
+	public TelegramService(TelegramMessageInterface telegramMessageInterface, BotSession botSession) {
 		this.telegramMessageInterface = telegramMessageInterface;
+		this.botSession = botSession;
 	}
 	
 	/**
@@ -29,4 +34,12 @@ public class TelegramService {
 	public void sendMessage(String message) {
 		telegramMessageInterface.sendMessage(message);
 	}
+	
+	/**
+	 * botSession stop code add
+	 */
+	public void stop() {
+		botSession.stop();
+	}
+
 }

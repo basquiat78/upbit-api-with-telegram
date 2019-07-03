@@ -74,5 +74,5 @@ public class BasquiatTelegramBot extends TelegramLongPollingBot implements Teleg
 			e.printStackTrace();
 		}
 	}
-
+	
 }
