@@ -3,7 +3,6 @@ package io.basquiat.quotation.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import io.basquiat.common.code.QuotationApiUri;
@@ -54,20 +53,20 @@ public class CandlesService {
 										   .count(count)
 										   .build()
 										   .generateQueryParam();
-		
-		Mono<ClientResponse> clientResponse = webClientBuilder.baseUrl(UPBIT_API_URL + UPBIT_API_VERSION)
-											 .build()
-											 .get()
-											 .uri(QuotationApiUri.CANDLES_MINUTES.URI + candleQuery, unit)
-											 .exchange();
 		// 요청 수 제한을 체크하기 위해 header정보로부터 로그 체크
-		return clientResponse.doOnSuccess(cr -> log.info(cr.headers().asHttpHeaders().get("Remaining-Req").get(0)))
-							 .flatMapMany(cr -> {
-								 				 if(cr.statusCode().is4xxClientError()) {
-								 					 return cr.bodyToMono(String.class).flatMap(body -> Mono.error(new ApiException(cr.statusCode(), body)) );
-								 				 }
-								 				 return cr.bodyToFlux(Minutes.class);
-							 });
+		return webClientBuilder.baseUrl(UPBIT_API_URL + UPBIT_API_VERSION)
+							   .build()
+							   .get()
+							   .uri(QuotationApiUri.CANDLES_MINUTES.URI + candleQuery, unit)
+							   .exchange()
+							   .doOnSuccess(cr -> log.info("Remaining-Req : " + cr.headers().asHttpHeaders().get("Remaining-Req").get(0)))
+							   .flatMapMany(cr -> {
+									 				 if(cr.statusCode().is4xxClientError()) {
+									 					 return cr.bodyToMono(String.class).flatMap(body -> Mono.error(new ApiException(cr.statusCode(), body)) );
+									 				 }
+									 				 	return cr.bodyToFlux(Minutes.class);
+				   							  	  }
+							   );
 	}
 
 	/**
@@ -88,20 +87,21 @@ public class CandlesService {
 										   .convertingPriceUnit(convertingPriceUnit)
 										   .build()
 										   .generateQueryParam();
-		
-		Mono<ClientResponse> clientResponse = webClientBuilder.baseUrl(UPBIT_API_URL + UPBIT_API_VERSION)
-															  .build()
-															  .get()
-															  .uri(QuotationApiUri.CANDLES_DAYS.URI + candleQuery)
-															  .exchange();
+
 		// 요청 수 제한을 체크하기 위해 header정보로부터 로그 체크
-		return clientResponse.doOnSuccess(cr -> log.info(cr.headers().asHttpHeaders().get("Remaining-Req").get(0)))
-							 .flatMapMany(cr -> {
-								 				 if(cr.statusCode().is4xxClientError()) {
-								 					 return cr.bodyToMono(String.class).flatMap(body -> Mono.error(new ApiException(cr.statusCode(), body)) );
-								 				 }
-								 				 return cr.bodyToFlux(Days.class);
-							 });
+		return webClientBuilder.baseUrl(UPBIT_API_URL + UPBIT_API_VERSION)
+							   .build()
+							   .get()
+							   .uri(QuotationApiUri.CANDLES_DAYS.URI + candleQuery)
+							   .exchange()
+							   .doOnSuccess(cr -> log.info("Remaining-Req : " + cr.headers().asHttpHeaders().get("Remaining-Req").get(0)))
+							   .flatMapMany(cr -> {
+				 				 					if(cr.statusCode().is4xxClientError()) {
+							 				 			return cr.bodyToMono(String.class).flatMap(body -> Mono.error(new ApiException(cr.statusCode(), body)) );
+							 				 		}
+							 				 		return cr.bodyToFlux(Days.class);
+								 				  }
+							   );
 	}
 	
 	/**
@@ -121,19 +121,20 @@ public class CandlesService {
 										   .build()
 										   .generateQueryParam();
 		
-		Mono<ClientResponse> clientResponse = webClientBuilder.baseUrl(UPBIT_API_URL + UPBIT_API_VERSION)
-															  .build()
-															  .get()
-															  .uri(QuotationApiUri.CANDLES_WEEKS.URI + candleQuery)
-															  .exchange();
 		// 요청 수 제한을 체크하기 위해 header정보로부터 로그 체크
-		return clientResponse.doOnSuccess(cr -> log.info(cr.headers().asHttpHeaders().get("Remaining-Req").get(0)))
-							 .flatMapMany(cr -> {
-												 if(cr.statusCode().is4xxClientError()) {
-													 return cr.bodyToMono(String.class).flatMap(body -> Mono.error(new ApiException(cr.statusCode(), body)) );
-												 }
-												 return cr.bodyToFlux(WeeksAndMonths.class);
-							 });
+		return webClientBuilder.baseUrl(UPBIT_API_URL + UPBIT_API_VERSION)
+							   .build()
+							   .get()
+							   .uri(QuotationApiUri.CANDLES_WEEKS.URI + candleQuery)
+							   .exchange()
+							   .doOnSuccess(cr -> log.info("Remaining-Req : " + cr.headers().asHttpHeaders().get("Remaining-Req").get(0)))
+							   .flatMapMany(cr -> {
+												 	if(cr.statusCode().is4xxClientError()) {
+												 		return cr.bodyToMono(String.class).flatMap(body -> Mono.error(new ApiException(cr.statusCode(), body)) );
+												 	}
+												 	return cr.bodyToFlux(WeeksAndMonths.class);
+						   						  }
+							   );
 	}
 	
 	/**
@@ -153,19 +154,20 @@ public class CandlesService {
 										   .build()
 										   .generateQueryParam();
 		
-		Mono<ClientResponse> clientResponse = webClientBuilder.baseUrl(UPBIT_API_URL + UPBIT_API_VERSION)
-															  .build()
-															  .get()
-															  .uri(QuotationApiUri.CANDLES_MONTHS.URI + candleQuery)
-															  .exchange();
 		// 요청 수 제한을 체크하기 위해 header정보로부터 로그 체크
-		return clientResponse.doOnSuccess(cr -> log.info(cr.headers().asHttpHeaders().get("Remaining-Req").get(0)))
-							 .flatMapMany(cr -> {
-												 if(cr.statusCode().is4xxClientError()) {
-													 return cr.bodyToMono(String.class).flatMap(body -> Mono.error(new ApiException(cr.statusCode(), body)) );
-												 }
-												 return cr.bodyToFlux(WeeksAndMonths.class);
-							 });
+		return webClientBuilder.baseUrl(UPBIT_API_URL + UPBIT_API_VERSION)
+							   .build()
+							   .get()
+							   .uri(QuotationApiUri.CANDLES_MONTHS.URI + candleQuery)
+							   .exchange()
+							   .doOnSuccess(cr -> log.info("Remaining-Req : " + cr.headers().asHttpHeaders().get("Remaining-Req").get(0)))
+							   .flatMapMany(cr -> {
+												 	if(cr.statusCode().is4xxClientError()) {
+												 		return cr.bodyToMono(String.class).flatMap(body -> Mono.error(new ApiException(cr.statusCode(), body)) );
+												 	}
+											 		return cr.bodyToFlux(WeeksAndMonths.class);
+						   						  }
+							   );
 	}
 	
 }
