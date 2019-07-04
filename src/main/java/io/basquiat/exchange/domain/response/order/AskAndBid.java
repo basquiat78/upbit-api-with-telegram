@@ -8,13 +8,13 @@ import lombok.Value;
  * 
  * @See Market
  * 
- * Bid와 Ask는 필드가 같지만 구분하기위해서 나눈다.
+ * Bid, Ask 도메인 통
  * 
  * created by basquiat
  *
  */
 @Value
-public class Ask {
+public class AskAndBid {
 
 	/** 화폐를 의미하는 영문 대문자 코드 */
 	private String currency;
@@ -26,5 +26,5 @@ public class Ask {
 	/** 최소 매도/매수 금액 */
 	@JsonProperty("min_total")
 	private Double minTotal;
-	
+
 }
