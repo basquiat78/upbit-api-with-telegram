@@ -6,6 +6,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * exchange api query param domain
+ * 
+ * created by basquiat
+ *
+ */
 @Builder
 @Data
 @AllArgsConstructor
