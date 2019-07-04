@@ -39,7 +39,7 @@ public class TickerController {
 	 */
 	@ApiOperation(value = "현재가 정보 데이터")
 	@GetMapping("/ticker")
-	public Flux<Ticker> findTicker(@ApiParam(value = "e.g BTC-ETH or array BTC-ETH,BTC-XRP") @RequestParam(name = "market", required = true) String market) {
+	public Flux<Ticker> findTicker(@ApiParam(value = "e.g BTC-ETH or array BTC-ETH,BTC-XRP", required = true) @RequestParam(name = "market", required = true) String market) {
 		return tickerService.getTicker(market);
 	}
 
