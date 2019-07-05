@@ -36,13 +36,15 @@ public class WithdrawController {
 
 	/**
 	 * 출금 리스트 조회 요청하기 for owner
-	 * 업비트 openAPI공지에 따라 uuid, txid조회할 수 있도록 처리
+	 * 업비트 openAPI공지에 따라 uuids, txids조회할 수 있도록 처리
 	 * @param currency
-	 * @param uuId
-	 * @param txId
 	 * @param state
+	 * @param uuIds
+	 * @param txIds
 	 * @param limit
-	 * @return @RequestHeader(name = "Authorization", required = true) String jwt
+	 * @param page
+	 * @param orderBy
+	 * @return Flux<WithdrawAndDeposit>
 	 */
 	@ApiOperation(value = "출금 리스트 조회 (for owner)")
 	@GetMapping("/withdraws/owner")
@@ -72,14 +74,16 @@ public class WithdrawController {
 
 	/**
 	 * 출금 리스트 조회 요청하기
-	 * 업비트 openAPI공지에 따라 uuid, txid조회할 수 있도록 처리
+	 * 업비트 openAPI공지에 따라 uuids, txids조회할 수 있도록 처리
 	 * @param currency
-	 * @param uuId
-	 * @param txId
 	 * @param state
+	 * @param uuIds
+	 * @param txIds
 	 * @param limit
+	 * @param page
+	 * @param orderBy
 	 * @param jwt
-	 * @return @RequestHeader(name = "Authorization", required = true) String jwt
+	 * @return Flux<WithdrawAndDeposit>
 	 */
 	@ApiOperation(value = "출금 리스트 조회")
 	@GetMapping("/withdraws")
