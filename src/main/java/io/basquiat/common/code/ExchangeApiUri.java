@@ -32,7 +32,18 @@ public enum ExchangeApiUri {
 	
 	WITHDRAWCOIN("/withdraws/coin", "코인 출금하기"),
 	
-	WITHDRAWKRW("/withdraws/krw", "원화 출금하기");
+	WITHDRAWKRW("/withdraws/krw", "원화 출금하기"),
+	
+	/** 입금 */
+	DEPOSITLIST("/deposits", "입금 리스트 조회"),
+
+	INDIVIDUALDEPOSIT("/deposit", "개별 입금 조회"),
+
+	GENERATECOINADDRESS("/deposits/generate_coin_address", "입금 주소 생성 요청"),
+	
+	ALLADDRESSES("/deposits/coin_addresses", "전체 입금 주소 조회"),
+	
+	COINADDRESS("/deposits/coin_address", "개별 입금 주소 조회");
 	
 	/** uri */
 	public String URI;

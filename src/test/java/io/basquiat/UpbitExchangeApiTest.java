@@ -12,8 +12,10 @@ import io.basquiat.exchange.domain.response.account.Account;
 import io.basquiat.exchange.domain.response.order.IndividualOrder;
 import io.basquiat.exchange.domain.response.order.Order;
 import io.basquiat.exchange.domain.response.order.OrderChance;
+import io.basquiat.exchange.domain.response.withdraw.WithdrawAndDeposit;
 import io.basquiat.exchange.domain.response.withdraw.WithdrawChance;
 import io.basquiat.exchange.service.AccountService;
+import io.basquiat.exchange.service.DepositService;
 import io.basquiat.exchange.service.OrderService;
 import io.basquiat.exchange.service.WithdrawService;
 import reactor.core.publisher.Flux;
@@ -32,6 +34,9 @@ public class UpbitExchangeApiTest {
 	
 	@Autowired
 	private WithdrawService withdrawService;
+	
+	@Autowired
+	private DepositService depositService;
 	
 	//@Test
 	public void accountAPICallTest() {
@@ -75,7 +80,7 @@ public class UpbitExchangeApiTest {
 					.expectComplete();
 	}
 	
-	@Test
+	//@Test
 	public void withdrawChanceAPICallTest() {
 		String currency = "BTC";
 		String queryParam = ExchangeQuery.builder().uuid(CommonUtils.encodingURL(currency))
@@ -84,6 +89,30 @@ public class UpbitExchangeApiTest {
 		Mono<WithdrawChance> mono = withdrawService.getWithdrawChanceWithoutRequestHeader(queryParam);
 		StepVerifier.create(mono)
 					.expectNextMatches(wc -> wc.getMemberLevel().getSecurityLevel() == 4)
+					.expectComplete();
+	}
+	
+	@Test
+	public void depositListChanceAPICallTest() {
+		String currency = "BTC";
+		String queryParam = ExchangeQuery.builder().currency(CommonUtils.encodingURL(currency))
+												   .build()
+												   .generateQueryParam();
+		Flux<WithdrawAndDeposit> flux = depositService.getDepositListWithoutRequestHeader(queryParam);
+		StepVerifier.create(flux)
+					.expectNextMatches(wad -> "deposit".equals(wad.getType()))
+					.expectComplete();
+	}
+	
+	//@Test
+	public void depositChanceAPICallTest() {
+		String currency = "BTC";
+		String queryParam = ExchangeQuery.builder().currency(CommonUtils.encodingURL(currency))
+												   .build()
+												   .generateQueryParam();
+		Mono<WithdrawAndDeposit> mono = depositService.getDepositWithoutRequestHeader(queryParam);
+		StepVerifier.create(mono)
+					.expectNextMatches(wad -> "deposit".equals(wad.getType()))
 					.expectComplete();
 	}
 	

@@ -43,7 +43,7 @@ public class CommonUtils {
 																				   try {
 																					   if(index.get() == 0) {
 																						   if(field.get(object) != null) {
-																							   if("uuids".equals(field.getName()) || "identifiers".equals(field.getName())) {
+																							   if("uuids".equals(field.getName()) || "txids".equals(field.getName()) || "identifiers".equals(field.getName())) {
 																								   AtomicInteger flag = new AtomicInteger(0);
 																								   keyValue = Arrays.asList(((String) field.get(object)).split(","))
 																										   			.stream().map(s -> {
@@ -72,7 +72,7 @@ public class CommonUtils {
 																						   }
 																					   } else {
 																						   if(field.get(object) != null) {
-																							   if("uuids".equals(field.getName()) || "identifiers".equals(field.getName())) {
+																							   if("uuids".equals(field.getName()) || "txids".equals(field.getName()) || "identifiers".equals(field.getName())) {
 																								   keyValue = Arrays.asList(((String) field.get(object)).split(","))
 																										   			.stream().map(s -> {
 																														   				return DelimiterEnum.AMPERSAND.character
