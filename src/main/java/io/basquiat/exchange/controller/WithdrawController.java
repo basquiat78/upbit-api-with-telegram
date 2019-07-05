@@ -175,7 +175,7 @@ public class WithdrawController {
 	 */
 	@ApiOperation(value = "출금 가능 정보 (for owner)")
 	@GetMapping("/withdraws/chance/owner")
-	public Mono<WithdrawChance> withdrawWithoutRequestHeader(@RequestParam(name = "currency", required = true) String currency) {
+	public Mono<WithdrawChance> withdrawChanceWithoutRequestHeader(@RequestParam(name = "currency", required = true) String currency) {
 		// queryParam생성
 		String queryParam = ExchangeQuery.builder()
 										 .currency(CommonUtils.encodingURL(currency))
@@ -192,7 +192,7 @@ public class WithdrawController {
 	 */
 	@ApiOperation(value = "출금 가능 정보")
 	@GetMapping("/withdraws/chance")
-	public Mono<WithdrawChance> withdrawWithRequestHeader(@RequestParam(name = "currency", required = true) String currency, 
+	public Mono<WithdrawChance> withdrawChanceWithRequestHeader(@RequestParam(name = "currency", required = true) String currency, 
 														  @RequestHeader(name = "Authorization", required = true) String jwt) {
 		// queryParam생성
 		String queryParam = ExchangeQuery.builder()
