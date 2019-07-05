@@ -6,6 +6,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * exchange api query param domain
+ * 
+ * created by basquiat
+ *
+ */
 @Builder
 @Data
 @AllArgsConstructor
@@ -73,16 +79,26 @@ public class ExchangeQuery {
 	private String uuids;
 	
 	/**
-	 *  주문 상태 
+	 *  주문 상태 <-
 	 *  	wait : 체결 대기 (default)
 	 *		done : 전체 체결 완료
 	 *		cancel : 주문 취소
+	 *
+	 *	출금 상태
+	 *		submitting : 처리 중
+	 *		submitted : 처리 완료
+	 *		almost_accepted : 출금대기중
+	 *		rejected : 거부
+	 *		accepted : 승인됨
+	 *		processing : 처리 중
+	 *		done : 완료
+	 *		canceled : 취소됨
 	 *  
 	 */
 	private String state;
 
 	/** 페이지 수, default: 1 */
-	private int page;
+	private Integer page;
 
 	/**
 	 * 
@@ -92,6 +108,30 @@ public class ExchangeQuery {
 	 * 
 	 */
 	private String order_by;
+	
+	/** Currency 코드 */
+	private String currency;
+
+	/** 개수 제한 (default: 100, max: 100) */
+	private Integer limit;
+
+	/** 
+	 * 입/출금 트랜잭션 아이디
+	 * 새로 적용된 업비트 API에서 입출금 리스트 조회 관련 txid조회가 가능하기 때문에 추
+	 */
+	private String txid;
+	
+	/** 출금 코인/원화 수량 */
+	private String amount;
+	
+	/** 출금 가능 주소에 등록된 출금 주소 */
+	private String address;
+
+	/** 2차 출금 주소 (필요한 코인에 한해서) */
+	private String secondary_address;
+
+	/** 출금 유형 default : 일반출금 | default : 일반출금 */
+	private String transaction_type;
 	
 	/**
 	 * domain정보로 uri에 붙을 queryparam을 만든다.

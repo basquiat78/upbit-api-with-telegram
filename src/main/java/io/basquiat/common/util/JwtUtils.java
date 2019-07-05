@@ -39,7 +39,6 @@ public class JwtUtils {
 							   .signWith(signatureAlgorithm, signingKey).compact();
 	}
 	
-	
 	/**
 	 * 
 	 * queryparam이 없는 경우
@@ -77,6 +76,5 @@ public class JwtUtils {
 		payload.put("query_hash_alg", AlgorithmEnum.SHA512.name());
 		return JwtUtils.createJwt(apiAccessKey, apiSecretKey, payload);
 	}
-	
 
 }

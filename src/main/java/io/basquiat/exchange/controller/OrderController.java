@@ -50,7 +50,7 @@ public class OrderController {
 	@ApiOperation(value = "주문 가능 정보 조회 (for owner)")
 	@GetMapping("/orders/chance/owner")
 	public Mono<OrderChance> orderChanceWithoutRequestHeader(@RequestParam(name = "market", required = true) String market) {
-		// queryParam생
+		// queryParam생성
 		String queryParam = ExchangeQuery.builder()
 								   		 .market(CommonUtils.encodingURL(market))
 								   		 .build()
@@ -69,7 +69,7 @@ public class OrderController {
 	@ApiOperation(value = "주문 가능 정보 조회")
 	@GetMapping("/orders/chance")
 	public Mono<OrderChance> orderChanceWithRequestHeader(@RequestParam(name = "market", required = true) String market, @RequestHeader(name = "Authorization", required = true) String jwt) {
-		// queryParam생
+		// queryParam생성
 		String queryParam = ExchangeQuery.builder()
 								   		 .market(CommonUtils.encodingURL(market))
 								   		 .build()
@@ -117,11 +117,11 @@ public class OrderController {
 	public Flux<Order> orderListWithoutRequestHeader(@RequestParam(name = "market", required = false) String market,
 													 @ApiParam(value = "wait : 체결 대기 (default) | done : 전체 체결 완료 | cancel : 주문 취소") 
 													 @RequestParam(name = "state", required = false) String state,
-													 @RequestParam(name = "uuids", required = false) String uuIds,
+													 @RequestParam(name = "uuIds", required = false) String uuIds,
 													 @RequestParam(name = "identifiers", required = false) String identifiers,
 													 @RequestParam(name = "page", required = false, defaultValue = "1") int page,
 													 @ApiParam(value = "asc : 오름차순 (default) | desc : 내림차순") 
-													 @RequestParam(name = "order_by", required = false) String orderBy) {
+													 @RequestParam(name = "orderBy", required = false) String orderBy) {
 		// query param 생성
 		String queryParam = ExchangeQuery.builder().market(CommonUtils.encodingURL(market))
 												   .state(CommonUtils.encodingURL(state))
@@ -149,10 +149,10 @@ public class OrderController {
 	@GetMapping("/orders")
 	public Flux<Order> orderListWithRequestHeader(@RequestParam(name = "market", required = false) String market,
 												  @RequestParam(name = "state", required = false) String state,
-												  @RequestParam(name = "uuids", required = false) String uuIds,
+												  @RequestParam(name = "uuIds", required = false) String uuIds,
 												  @RequestParam(name = "identifiers", required = false) String identifiers,
 												  @RequestParam(name = "page", required = false, defaultValue = "1") int page,
-												  @RequestParam(name = "order_by", required = false) String orderBy,
+												  @RequestParam(name = "orderBy", required = false) String orderBy,
 												  @RequestHeader(name = "Authorization", required = true) String jwt) {
 		// query param 생성
 		String queryParam = ExchangeQuery.builder().market(CommonUtils.encodingURL(market))
@@ -179,7 +179,7 @@ public class OrderController {
 	@ApiOperation(value = "개별 주문 조회 (for owner)")
 	@GetMapping("/order/owner")
 	public Mono<IndividualOrder> individualOrderWithoutRequestHeader(@ApiParam(value = "uuid 혹은 identifier 둘 중 하나의 값이 반드시 포함되어야 합니다.") 
-																	 @RequestParam(name = "uuid", required = false) String uuId,
+																	 @RequestParam(name = "uuId", required = false) String uuId,
 																	 @ApiParam(value = "uuid 혹은 identifier 둘 중 하나의 값이 반드시 포함되어야 합니다.") 
 														   		  	 @RequestParam(name = "identifier", required = false) String identifier) {
 		// query param 생성
@@ -204,7 +204,7 @@ public class OrderController {
 	@ApiOperation(value = "개별 주문 조회")
 	@GetMapping("/order")
 	public Mono<IndividualOrder> individualOrderWithRequestHeader(@ApiParam(value = "uuid 혹은 identifier 둘 중 하나의 값이 반드시 포함되어야 합니다.") 
-												   		  		  @RequestParam(name = "uuid", required = false) String uuId,
+												   		  		  @RequestParam(name = "uuId", required = false) String uuId,
 												   		  		  @ApiParam(value = "uuid 혹은 identifier 둘 중 하나의 값이 반드시 포함되어야 합니다.") 
 												   				  @RequestParam(name = "identifier", required = false) String identifier,
 												   				  @RequestHeader(name = "Authorization", required = true) String jwt) {
@@ -225,7 +225,7 @@ public class OrderController {
 	 */
 	@DeleteMapping("/order/owner")
 	public Mono<OrderCancel> orderCancelWithoutRequestHeader(@ApiParam(value = "취소할 주문의 UUID") 
-															 @RequestParam(name = "uuid", required = true) String uuId) {
+															 @RequestParam(name = "uuId", required = true) String uuId) {
 		// query param 생성
 		String queryParam = ExchangeQuery.builder().uuid(CommonUtils.encodingURL(uuId))
 												   .build()
@@ -243,7 +243,7 @@ public class OrderController {
 	 */
 	@DeleteMapping("/order")
 	public Mono<OrderCancel> orderCancelWithoutRequestHeader(@ApiParam(value = "취소할 주문의 UUID") 
-															 @RequestParam(name = "uuid", required = true) String uuId,
+															 @RequestParam(name = "uuId", required = true) String uuId,
 															 @RequestHeader(name = "Authorization", required = true) String jwt) {
 		// query param 생성
 		String queryParam = ExchangeQuery.builder().uuid(CommonUtils.encodingURL(uuId))

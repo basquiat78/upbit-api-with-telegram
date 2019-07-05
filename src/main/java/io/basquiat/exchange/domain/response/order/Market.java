@@ -10,6 +10,9 @@ import lombok.Value;
  * 
  * 마켓 정보 도메인 Immutable
  * 
+ * Ask, Bid Domain 하나로 통합.
+ * 같은 객체를 만들 필요가 없다.
+ * 
  * created by basquiat
  *
  */
@@ -31,10 +34,10 @@ public class Market {
 	private List<String> ordeSides;
 
 	/** 매수 시 제약사항 도메인 */
-	private Bid bid;
+	private AskAndBid bid;
 
 	/** 매도 시 제약사항 도메인 */
-	private Ask ask;
+	private AskAndBid ask;
 
 	/** 최대 매도/매수 금액 */
 	@JsonProperty("max_total")

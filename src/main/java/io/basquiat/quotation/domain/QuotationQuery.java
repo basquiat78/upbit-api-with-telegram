@@ -28,7 +28,7 @@ public class QuotationQuery {
 	private String to;
 	
 	/** 가져온 데이터 리스트 사이즈 */
-	private int count;
+	private Integer count;
 	
 	/** 종가 환산 화폐 단위 (생략 가능, KRW로 명시할 시 원화 환산 가격을 반환.) */
 	private String convertingPriceUnit;

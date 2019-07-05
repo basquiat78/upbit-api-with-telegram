@@ -12,8 +12,10 @@ import io.basquiat.exchange.domain.response.account.Account;
 import io.basquiat.exchange.domain.response.order.IndividualOrder;
 import io.basquiat.exchange.domain.response.order.Order;
 import io.basquiat.exchange.domain.response.order.OrderChance;
+import io.basquiat.exchange.domain.response.withdraw.WithdrawChance;
 import io.basquiat.exchange.service.AccountService;
 import io.basquiat.exchange.service.OrderService;
+import io.basquiat.exchange.service.WithdrawService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -27,6 +29,9 @@ public class UpbitExchangeApiTest {
 	
 	@Autowired
 	private OrderService orderService;
+	
+	@Autowired
+	private WithdrawService withdrawService;
 	
 	//@Test
 	public void accountAPICallTest() {
@@ -58,7 +63,7 @@ public class UpbitExchangeApiTest {
 					.expectComplete();
 	}
 	
-	@Test
+	//@Test
 	public void individualOrderAPICallTest() {
 		String uuId = "5e7f703d-2d2a-462d-a1d0-d16f0fb1d363";
 		String queryParam = ExchangeQuery.builder().uuid(CommonUtils.encodingURL(uuId))
@@ -67,6 +72,18 @@ public class UpbitExchangeApiTest {
 		Mono<IndividualOrder> mono = orderService.getIndividualOrderWithoutRequestHeader(queryParam);
 		StepVerifier.create(mono)
 					.expectNextMatches(io -> uuId.equals(io.getUuId()))
+					.expectComplete();
+	}
+	
+	@Test
+	public void withdrawChanceAPICallTest() {
+		String currency = "BTC";
+		String queryParam = ExchangeQuery.builder().uuid(CommonUtils.encodingURL(currency))
+												   .build()
+												   .generateQueryParam();
+		Mono<WithdrawChance> mono = withdrawService.getWithdrawChanceWithoutRequestHeader(queryParam);
+		StepVerifier.create(mono)
+					.expectNextMatches(wc -> wc.getMemberLevel().getSecurityLevel() == 4)
 					.expectComplete();
 	}
 	

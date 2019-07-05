@@ -39,7 +39,7 @@ public class OrderBookController {
 	 */
 	@ApiOperation(value = "호가 정보 데이터")
 	@GetMapping("/orderbook")
-	public Flux<OrderBook> findOrderBook(@ApiParam(value = "e.g BTC-ETH or array BTC-ETH,BTC-XRP") @RequestParam(name = "market", required = true) String market) {
+	public Flux<OrderBook> findOrderBook(@ApiParam(value = "e.g BTC-ETH or array BTC-ETH,BTC-XRP", required = true) @RequestParam(name = "market", required = true) String market) {
 		return orderBookService.getOrderBook(market);
 	}
 
