@@ -119,7 +119,6 @@ public class WithdrawController {
 										 .state(CommonUtils.encodingURL(state))
 								   		 .build()
 								   		 .generateQueryParam();
-		System.out.println(">>>>>>>>>>>" +  queryParam);
 		return withdrawService.getWithdrawWithoutRequestHeader(queryParam);
 	}
 
