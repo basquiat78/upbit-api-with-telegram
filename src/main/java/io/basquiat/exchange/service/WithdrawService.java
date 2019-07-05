@@ -142,4 +142,72 @@ public class WithdrawService {
 							   );
 	}
 
+	/**
+	 * 코인 출금 for owner
+	 * @param queryParam
+	 * @return Mono<WithdrawAndDeposit>
+	 */
+	public Mono<WithdrawAndDeposit> getWithdrawCoinWithoutRequestHeader(String queryParam) {
+		String jwt = JwtUtils.createJwWithQueryParameters(UPBIT_ACCESS_KEY, UPBIT_SECRET_KEY, queryParam);
+		return this.getWithdrawCoinWithRequestHeader(queryParam, jwt);
+	}
+
+	/**
+	 * 코인 출금
+	 * @param queryParam
+	 * @param jwt
+	 * @return Mono<WithdrawAndDeposit>
+	 */
+	public Mono<WithdrawAndDeposit> getWithdrawCoinWithRequestHeader(String queryParam, String jwt) {
+		return webClientBuilder.baseUrl(UPBIT_API_URL + UPBIT_API_VERSION)
+							   .build()
+							   .get()
+				 			   .uri(ExchangeApiUri.WITHDRAWCOIN.URI + queryParam)
+				 			   .header("Authorization", jwt)
+				 			   .exchange()
+				 			   .doOnSuccess(cr -> log.info("X-Forwarded-Uri : " + cr.headers().asHttpHeaders().get("X-Forwarded-Uri").get(0)))
+							   .doOnSuccess(cr -> log.info("Remaining-Req : " + cr.headers().asHttpHeaders().get("Remaining-Req").get(0)))
+							   .flatMap(cr -> {
+					 				 			if(cr.statusCode().is4xxClientError()) {
+						 				 			return cr.bodyToMono(String.class).flatMap(body -> Mono.error(new ApiException(cr.statusCode(), body)) );
+						 				 		}
+						 				 		return cr.bodyToMono(WithdrawAndDeposit.class);
+							  				  }
+							   );
+	}
+
+	/**
+	 * 원화 출금 for owner
+	 * @param queryParam
+	 * @return Mono<WithdrawAndDeposit>
+	 */
+	public Mono<WithdrawAndDeposit> getWithdrawKrwWithoutRequestHeader(String queryParam) {
+		String jwt = JwtUtils.createJwWithQueryParameters(UPBIT_ACCESS_KEY, UPBIT_SECRET_KEY, queryParam);
+		return this.getWithdrawKrwWithRequestHeader(queryParam, jwt);
+	}
+
+	/**
+	 * 원화 출금
+	 * @param queryParam
+	 * @param jwt
+	 * @return Mono<WithdrawAndDeposit>
+	 */
+	public Mono<WithdrawAndDeposit> getWithdrawKrwWithRequestHeader(String queryParam, String jwt) {
+		return webClientBuilder.baseUrl(UPBIT_API_URL + UPBIT_API_VERSION)
+							   .build()
+							   .get()
+				 			   .uri(ExchangeApiUri.WITHDRAWKRW.URI + queryParam)
+				 			   .header("Authorization", jwt)
+				 			   .exchange()
+				 			   .doOnSuccess(cr -> log.info("X-Forwarded-Uri : " + cr.headers().asHttpHeaders().get("X-Forwarded-Uri").get(0)))
+							   .doOnSuccess(cr -> log.info("Remaining-Req : " + cr.headers().asHttpHeaders().get("Remaining-Req").get(0)))
+							   .flatMap(cr -> {
+					 				 			if(cr.statusCode().is4xxClientError()) {
+						 				 			return cr.bodyToMono(String.class).flatMap(body -> Mono.error(new ApiException(cr.statusCode(), body)) );
+						 				 		}
+						 				 		return cr.bodyToMono(WithdrawAndDeposit.class);
+							  				  }
+							   );
+	}
+
 }

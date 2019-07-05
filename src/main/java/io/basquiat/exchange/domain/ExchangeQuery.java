@@ -121,6 +121,18 @@ public class ExchangeQuery {
 	 */
 	private String txid;
 	
+	/** 출금 코인/원화 수량 */
+	private String amount;
+	
+	/** 출금 가능 주소에 등록된 출금 주소 */
+	private String address;
+
+	/** 2차 출금 주소 (필요한 코인에 한해서) */
+	private String secondary_address;
+
+	/** 출금 유형 default : 일반출금 | default : 일반출금 */
+	private String transaction_type;
+	
 	/**
 	 * domain정보로 uri에 붙을 queryparam을 만든다.
 	 * @return String
