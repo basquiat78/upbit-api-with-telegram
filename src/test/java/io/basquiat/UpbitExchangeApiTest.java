@@ -92,10 +92,10 @@ public class UpbitExchangeApiTest {
 					.expectComplete();
 	}
 	
-	//@Test
+	@Test
 	public void depositListChanceAPICallTest() {
 		String currency = "BTC";
-		String queryParam = ExchangeQuery.builder().uuid(CommonUtils.encodingURL(currency))
+		String queryParam = ExchangeQuery.builder().currency(CommonUtils.encodingURL(currency))
 												   .build()
 												   .generateQueryParam();
 		Flux<WithdrawAndDeposit> flux = depositService.getDepositListWithoutRequestHeader(queryParam);
@@ -104,10 +104,10 @@ public class UpbitExchangeApiTest {
 					.expectComplete();
 	}
 	
-	@Test
+	//@Test
 	public void depositChanceAPICallTest() {
 		String currency = "BTC";
-		String queryParam = ExchangeQuery.builder().uuid(CommonUtils.encodingURL(currency))
+		String queryParam = ExchangeQuery.builder().currency(CommonUtils.encodingURL(currency))
 												   .build()
 												   .generateQueryParam();
 		Mono<WithdrawAndDeposit> mono = depositService.getDepositWithoutRequestHeader(queryParam);
