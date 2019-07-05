@@ -47,18 +47,24 @@ public class WithdrawController {
 	@ApiOperation(value = "출금 리스트 조회 (for owner)")
 	@GetMapping("/withdraws/owner")
 	public Flux<WithdrawAndDeposit> withdrawListWithoutRequestHeader(@RequestParam(name = "currency", required = false) String currency,
-																  	 @RequestParam(name = "uuId", required = false) String uuId,
-																  	 @RequestParam(name = "txId", required = false) String txId,
-																  	 @ApiParam(value = "submitting : 처리 중 | submitted : 처리 완료 | almost_accepted : 출금대기중 | rejected : 거부 | accepted : 승인됨 | processing : 처리 중 | done : 완료 | canceled : 취소됨")
-																  	 @RequestParam(name = "state", required = false) String state,
-																  	 @RequestParam(name = "limit", required = false, defaultValue = "100") int limit) {
+																	 @ApiParam(value = "submitting : 처리 중 | submitted : 처리 완료 | almost_accepted : 출금대기중 | rejected : 거부 | accepted : 승인됨 | processing : 처리 중 | done : 완료 | canceled : 취소됨")
+																	 @RequestParam(name = "state", required = false) String state,
+																	 @ApiParam(value = "uuid를 구분자 ','를 통해서 붙여서 정보를 보낸다.")
+																	 @RequestParam(name = "uuIds", required = false) String uuIds,
+																	 @ApiParam(value = "txid를 구분자 ','를 통해서 붙여서 정보를 보낸다.")
+																  	 @RequestParam(name = "txIds", required = false) String txIds,
+																 	 @RequestParam(name = "limit", required = false, defaultValue = "100") int limit,
+																 	 @RequestParam(name = "page", required = false, defaultValue = "1") int page,
+																 	 @RequestParam(name = "orderBy", required = false) String orderBy) {
 		// queryParam생성
 		String queryParam = ExchangeQuery.builder()
 										 .currency(CommonUtils.encodingURL(currency))
-										 .uuid(CommonUtils.encodingURL(uuId))
-										 .txid(CommonUtils.encodingURL(txId))
 										 .state(CommonUtils.encodingURL(state))
+										 .uuids(uuIds)
+										 .txids(txIds)
 										 .limit(limit)
+										 .page(page)
+										 .order_by(CommonUtils.encodingURL(orderBy))
 								   		 .build()
 								   		 .generateQueryParam();
 		return withdrawService.getWithdrawListWithoutRequestHeader(queryParam);
@@ -78,19 +84,25 @@ public class WithdrawController {
 	@ApiOperation(value = "출금 리스트 조회")
 	@GetMapping("/withdraws")
 	public Flux<WithdrawAndDeposit> withdrawListWithRequestHeader(@RequestParam(name = "currency", required = false) String currency,
-														  	 	  @RequestParam(name = "uuId", required = false) String uuId,
-														  	 	  @RequestParam(name = "txId", required = false) String txId,
-														  	 	  @ApiParam(value = "submitting : 처리 중 | submitted : 처리 완료 | almost_accepted : 출금대기중 | rejected : 거부 | accepted : 승인됨 | processing : 처리 중 | done : 완료 | canceled : 취소됨")
-														  	 	  @RequestParam(name = "state", required = false) String state,
-														  	 	  @RequestParam(name = "limit", required = false, defaultValue = "100") int limit,
+															 	  @ApiParam(value = "submitting : 처리 중 | submitted : 처리 완료 | almost_accepted : 출금대기중 | rejected : 거부 | accepted : 승인됨 | processing : 처리 중 | done : 완료 | canceled : 취소됨")
+														 		  @RequestParam(name = "state", required = false) String state,
+														 		  @ApiParam(value = "uuid를 구분자 ','를 통해서 붙여서 정보를 보낸다.")
+														 		  @RequestParam(name = "uuIds", required = false) String uuIds,
+																  @ApiParam(value = "txid를 구분자 ','를 통해서 붙여서 정보를 보낸다.")
+															  	  @RequestParam(name = "txIds", required = false) String txIds,
+													  	 		  @RequestParam(name = "limit", required = false, defaultValue = "100") int limit,
+													  	 		  @RequestParam(name = "page", required = false, defaultValue = "1") int page,
+													  	 		  @RequestParam(name = "orderBy", required = false) String orderBy,
 														  	 	  @RequestHeader(name = "Authorization", required = true) String jwt) {
 		// queryParam생성
 		String queryParam = ExchangeQuery.builder()
 										 .currency(CommonUtils.encodingURL(currency))
-										 .uuid(CommonUtils.encodingURL(uuId))
-										 .txid(CommonUtils.encodingURL(txId))
 										 .state(CommonUtils.encodingURL(state))
+										 .uuids(uuIds)
+										 .txids(txIds)
 										 .limit(limit)
+										 .page(page)
+										 .order_by(CommonUtils.encodingURL(orderBy))
 								   		 .build()
 								   		 .generateQueryParam();
 		return withdrawService.getWithdrawListWithRequestHeader(queryParam, jwt);

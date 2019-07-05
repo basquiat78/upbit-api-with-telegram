@@ -75,7 +75,7 @@ public class ExchangeQuery {
 	/** 주문의 고유 아이디 */
 	private String uuid;
 	
-	/** 주문의 고유 아이디 */
+	/** uuid 배열정보, 정보는 ','자로 붙여서 */
 	private String uuids;
 	
 	/**
@@ -117,9 +117,12 @@ public class ExchangeQuery {
 
 	/** 
 	 * 입/출금 트랜잭션 아이디
-	 * 새로 적용된 업비트 API에서 입출금 리스트 조회 관련 txid조회가 가능하기 때문에 추
+	 * 새로 적용된 업비트 API에서 입출금 리스트 조회 관련 txid조회가 가능하기 때문에 추가
 	 */
 	private String txid;
+	
+	/** txid 배열정보, 정보는 ','자로 붙여서 */
+	private String txids;
 	
 	/** 출금 코인/원화 수량 */
 	private String amount;
