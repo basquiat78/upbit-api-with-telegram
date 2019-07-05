@@ -9,6 +9,7 @@ import io.basquiat.common.code.ExchangeApiUri;
 import io.basquiat.common.exception.ApiException;
 import io.basquiat.common.util.JwtUtils;
 import io.basquiat.exchange.domain.response.withdraw.WithdrawAndDeposit;
+import io.basquiat.exchange.domain.response.withdraw.WithdrawChance;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -103,6 +104,40 @@ public class WithdrawService {
 						 				 			return cr.bodyToMono(String.class).flatMap(body -> Mono.error(new ApiException(cr.statusCode(), body)) );
 						 				 		}
 						 				 		return cr.bodyToMono(WithdrawAndDeposit.class);
+							  				  }
+							   );
+	}
+
+	/**
+	 * 출금 가능 정보 for owner
+	 * @param queryParam
+	 * @return Mono<WithdrawChance>
+	 */
+	public Mono<WithdrawChance> getWithdrawChanceWithoutRequestHeader(String queryParam) {
+		String jwt = JwtUtils.createJwWithQueryParameters(UPBIT_ACCESS_KEY, UPBIT_SECRET_KEY, queryParam);
+		return this.getWithdrawChanceWithRequestHeader(queryParam, jwt);
+	}
+
+	/**
+	 * 출금 가능 정보
+	 * @param queryParam
+	 * @param jwt
+	 * @return Mono<WithdrawChance>
+	 */
+	public Mono<WithdrawChance> getWithdrawChanceWithRequestHeader(String queryParam, String jwt) {
+		return webClientBuilder.baseUrl(UPBIT_API_URL + UPBIT_API_VERSION)
+							   .build()
+							   .get()
+				 			   .uri(ExchangeApiUri.WITHDRAWCHANCE.URI + queryParam)
+				 			   .header("Authorization", jwt)
+				 			   .exchange()
+				 			   .doOnSuccess(cr -> log.info("X-Forwarded-Uri : " + cr.headers().asHttpHeaders().get("X-Forwarded-Uri").get(0)))
+							   .doOnSuccess(cr -> log.info("Remaining-Req : " + cr.headers().asHttpHeaders().get("Remaining-Req").get(0)))
+							   .flatMap(cr -> {
+					 				 			if(cr.statusCode().is4xxClientError()) {
+						 				 			return cr.bodyToMono(String.class).flatMap(body -> Mono.error(new ApiException(cr.statusCode(), body)) );
+						 				 		}
+						 				 		return cr.bodyToMono(WithdrawChance.class);
 							  				  }
 							   );
 	}

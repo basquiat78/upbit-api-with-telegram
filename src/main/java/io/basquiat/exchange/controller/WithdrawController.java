@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.basquiat.common.util.CommonUtils;
 import io.basquiat.exchange.domain.ExchangeQuery;
 import io.basquiat.exchange.domain.response.withdraw.WithdrawAndDeposit;
+import io.basquiat.exchange.domain.response.withdraw.WithdrawChance;
 import io.basquiat.exchange.service.WithdrawService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -149,6 +150,40 @@ public class WithdrawController {
 								   		 .build()
 								   		 .generateQueryParam();
 		return withdrawService.getWithdrawWithRequestHeader(queryParam, jwt);
+	}
+	
+	/**
+	 * 출금 가능 정보 요청하기 for owner
+	 * @param currency
+	 * @return Mono<WithdrawChance>
+	 */
+	@ApiOperation(value = "출금 가능 정보 (for owner)")
+	@GetMapping("/withdraws/chance/owner")
+	public Mono<WithdrawChance> withdrawWithoutRequestHeader(@RequestParam(name = "currency", required = true) String currency) {
+		// queryParam생성
+		String queryParam = ExchangeQuery.builder()
+										 .currency(CommonUtils.encodingURL(currency))
+								   		 .build()
+								   		 .generateQueryParam();
+		return withdrawService.getWithdrawChanceWithoutRequestHeader(queryParam);
+	}
+
+	/**
+	 * 출금 가능 정보 요청하기
+	 * @param currency
+	 * @param jwt
+	 * @return Mono<WithdrawChance>
+	 */
+	@ApiOperation(value = "출금 가능 정보")
+	@GetMapping("/withdraws/chance")
+	public Mono<WithdrawChance> withdrawWithRequestHeader(@RequestParam(name = "currency", required = true) String currency, 
+														  @RequestHeader(name = "Authorization", required = true) String jwt) {
+		// queryParam생성
+		String queryParam = ExchangeQuery.builder()
+										 .currency(CommonUtils.encodingURL(currency))
+								   		 .build()
+								   		 .generateQueryParam();
+		return withdrawService.getWithdrawChanceWithRequestHeader(queryParam, jwt);
 	}
 
 }
