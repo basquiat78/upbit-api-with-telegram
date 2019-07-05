@@ -2,6 +2,8 @@ package io.basquiat.exchange.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -9,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.basquiat.common.util.CommonUtils;
 import io.basquiat.exchange.domain.ExchangeQuery;
+import io.basquiat.exchange.domain.response.deposit.DepositAddress;
+import io.basquiat.exchange.domain.response.deposit.GenerateAddress;
 import io.basquiat.exchange.domain.response.withdraw.WithdrawAndDeposit;
 import io.basquiat.exchange.service.DepositService;
 import io.swagger.annotations.Api;
@@ -156,6 +160,86 @@ public class DepositController {
 								   		 .build()
 								   		 .generateQueryParam();
 		return depositService.getDepositWithRequestHeader(queryParam, jwt);
+	}
+
+	/**
+	 * 전체 입금 주소 조회 요청하기 for owner
+	 * @return Flux<DepositAddress>
+	 */
+	@ApiOperation(value = "전체 입금 주소 조회 (for owner)")
+	@GetMapping("/deposit/addresses/owner")
+	public Flux<DepositAddress> depositAddressesWithoutRequestHeader() {
+		return depositService.getDepositAddressesWithoutRequestHeader();
+	}
+
+	/**
+	 * 전체 입금 주소 조회 요청하기
+	 * @param jwt
+	 * @return Flux<DepositAddress>
+	 */
+	@ApiOperation(value = "전체 입금 주소 조회")
+	@GetMapping("/deposit/addresses")
+	public Flux<DepositAddress> depositAddressesWithRequestHeader(@RequestHeader(name = "Authorization", required = true) String jwt) {
+		return depositService.getDepositAddressesWithRequestHeader(jwt);
+	}
+
+	/**
+	 * 개별 입금 주소 조회 요청하기 for owner
+	 * @param currency
+	 * @return Mono<DepositAddress>
+	 */
+	@ApiOperation(value = "개별 입금 주소 조회 (for owner)")
+	@GetMapping("/deposit/address/owner")
+	public Mono<DepositAddress> depositAddressWithoutRequestHeader(@RequestParam(name = "currency", required = true) String currency) {
+		// queryParam생성
+		String queryParam = ExchangeQuery.builder()
+										 .currency(CommonUtils.encodingURL(currency))
+								   		 .build()
+								   		 .generateQueryParam();
+		return depositService.getDepositAddressWithoutRequestHeader(queryParam);
+	}
+	
+	/**
+	 * 개별 입금 주소 조회 요청하기
+	 * @param currency
+	 * @param jwt
+	 * @return Mono<DepositAddress>
+	 */
+	@ApiOperation(value = "개별 입금 주소 조회")
+	@GetMapping("/deposit/address")
+	public Mono<DepositAddress> depositAddressWithRequestHeader(@RequestParam(name = "currency", required = false) String currency,
+										  	 	 		 		@RequestHeader(name = "Authorization", required = true) String jwt) {
+		// queryParam생성
+		String queryParam = ExchangeQuery.builder()
+										 .currency(CommonUtils.encodingURL(currency))
+								   		 .build()
+								   		 .generateQueryParam();
+		return depositService.getDepositAddressWithRequestHeader(queryParam, jwt);
+	}
+	
+	/**
+	 * 입금 주소 생성 요청하기 for owner
+	 * @param currency
+	 * @return Mono<GenerateAddress>
+	 */
+	@ApiOperation(value = "입금 주소 생성 요청 (for owner)")
+	@PostMapping("/deposits/gen/address/owner")
+	public Mono<GenerateAddress> generateAddressWithoutRequestHeader(@RequestBody ExchangeQuery exchangeQuery) {
+		return depositService.generateAddressWithoutRequestHeader(exchangeQuery);
+	}
+
+	/**
+	 * 입금 주소 생성 요청하기
+	 * @param currency
+	 * @param jwt
+	 * @return Mono<GenerateAddress>
+	 */
+	@ApiOperation(value = "입금 주소 생성 요청")
+	@PostMapping("/deposits/gen/address")
+	public Mono<GenerateAddress> generateAddressWithRequestHeader(@RequestBody ExchangeQuery exchangeQuery,
+																  @RequestHeader(name = "Authorization", required = true) String jwt) {
+		exchangeQuery.adjustEncode();
+		return depositService.generateAddressWithRequestHeader(exchangeQuery, jwt);
 	}
 
 }

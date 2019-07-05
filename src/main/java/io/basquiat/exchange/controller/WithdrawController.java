@@ -3,6 +3,7 @@ package io.basquiat.exchange.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -213,22 +214,8 @@ public class WithdrawController {
 	 */
 	@ApiOperation(value = "코인 출금하기 (for owner)")
 	@PostMapping("/withdraws/coin/owner")
-	public Mono<WithdrawAndDeposit> withdrawCoinWithoutRequestHeader(@RequestParam(name = "currency", required = true) String currency,
-														 		 	 @RequestParam(name = "amount", required = true) String amount,
-														 		 	 @RequestParam(name = "address", required = true) String address,
-														 		 	 @RequestParam(name = "secondaryAddress", required = false) String secondaryAddress,
-														 		 	 @ApiParam(value = "출금 유형 default : 일반출금 | default : 일반출금")
-														 		 	 @RequestParam(name = "transactionType", required = false) String transactionType) {
-		// queryParam생성
-		String queryParam = ExchangeQuery.builder()
-										 .currency(CommonUtils.encodingURL(currency))
-										 .amount(CommonUtils.encodingURL(amount))
-										 .address(CommonUtils.encodingURL(address))
-										 .secondary_address(CommonUtils.encodingURL(secondaryAddress))
-										 .transaction_type(CommonUtils.encodingURL(transactionType))
-								   		 .build()
-								   		 .generateQueryParam();
-		return withdrawService.getWithdrawCoinWithoutRequestHeader(queryParam);
+	public Mono<WithdrawAndDeposit> withdrawCoinWithoutRequestHeader(@RequestBody ExchangeQuery exchangeQuery) {
+		return withdrawService.getWithdrawCoinWithoutRequestHeader(exchangeQuery);
 	}
 
 	/**
@@ -239,23 +226,10 @@ public class WithdrawController {
 	 */
 	@ApiOperation(value = "코인 출금하기")
 	@PostMapping("/withdraws/coin")
-	public Mono<WithdrawAndDeposit> withdrawCoinWithRequestHeader(@RequestParam(name = "currency", required = true) String currency,
-													 	  		  @RequestParam(name = "amount", required = true) String amount,
-													 	  		  @RequestParam(name = "address", required = true) String address,
-													 	  		  @RequestParam(name = "secondaryAddress", required = false) String secondaryAddress,
-													 	  		  @ApiParam(value = "출금 유형 default : 일반출금 | default : 일반출금")
-																  @RequestParam(name = "transactionType", required = false) String transactionType,
+	public Mono<WithdrawAndDeposit> withdrawCoinWithRequestHeader(@RequestBody ExchangeQuery exchangeQuery,
 																  @RequestHeader(name = "Authorization", required = true) String jwt) {
-		// queryParam생성
-		String queryParam = ExchangeQuery.builder()
-										 .currency(CommonUtils.encodingURL(currency))
-										 .amount(CommonUtils.encodingURL(amount))
-										 .address(CommonUtils.encodingURL(address))
-										 .secondary_address(CommonUtils.encodingURL(secondaryAddress))
-										 .transaction_type(CommonUtils.encodingURL(transactionType))
-								   		 .build()
-								   		 .generateQueryParam();
-		return withdrawService.getWithdrawCoinWithRequestHeader(queryParam, jwt);
+		exchangeQuery.adjustEncode();
+		return withdrawService.getWithdrawCoinWithRequestHeader(exchangeQuery, jwt);
 	}
 	
 	/**
@@ -265,13 +239,8 @@ public class WithdrawController {
 	 */
 	@ApiOperation(value = "원화 출금하기 (for owner)")
 	@PostMapping("/withdraws/krw/owner")
-	public Mono<WithdrawAndDeposit> withdrawKrwWithoutRequestHeader(@RequestParam(name = "amount", required = true) String amount) {
-		// queryParam생성
-		String queryParam = ExchangeQuery.builder()
-										 .amount(CommonUtils.encodingURL(amount))
-								   		 .build()
-								   		 .generateQueryParam();
-		return withdrawService.getWithdrawKrwWithoutRequestHeader(queryParam);
+	public Mono<WithdrawAndDeposit> withdrawKrwWithoutRequestHeader(@RequestBody ExchangeQuery exchangeQuery) {
+		return withdrawService.getWithdrawKrwWithoutRequestHeader(exchangeQuery);
 	}
 
 	/**
@@ -282,14 +251,10 @@ public class WithdrawController {
 	 */
 	@ApiOperation(value = "원화 출금하기")
 	@PostMapping("/withdraws/krw")
-	public Mono<WithdrawAndDeposit> withdrawKrwWithRequestHeader(@RequestParam(name = "amount", required = true) String amount,
+	public Mono<WithdrawAndDeposit> withdrawKrwWithRequestHeader(@RequestBody ExchangeQuery exchangeQuery,
 																 @RequestHeader(name = "Authorization", required = true) String jwt) {
-		// queryParam생성
-		String queryParam = ExchangeQuery.builder()
-										 .amount(CommonUtils.encodingURL(amount))
-								   		 .build()
-								   		 .generateQueryParam();
-		return withdrawService.getWithdrawKrwWithRequestHeader(queryParam, jwt);
+		exchangeQuery.adjustEncode();
+		return withdrawService.getWithdrawKrwWithRequestHeader(exchangeQuery, jwt);
 	}
 
 }

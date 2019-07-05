@@ -3,11 +3,13 @@ package io.basquiat.exchange.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import io.basquiat.common.code.ExchangeApiUri;
 import io.basquiat.common.exception.ApiException;
 import io.basquiat.common.util.JwtUtils;
+import io.basquiat.exchange.domain.ExchangeQuery;
 import io.basquiat.exchange.domain.response.withdraw.WithdrawAndDeposit;
 import io.basquiat.exchange.domain.response.withdraw.WithdrawChance;
 import lombok.extern.slf4j.Slf4j;
@@ -147,9 +149,10 @@ public class WithdrawService {
 	 * @param queryParam
 	 * @return Mono<WithdrawAndDeposit>
 	 */
-	public Mono<WithdrawAndDeposit> getWithdrawCoinWithoutRequestHeader(String queryParam) {
-		String jwt = JwtUtils.createJwWithQueryParameters(UPBIT_ACCESS_KEY, UPBIT_SECRET_KEY, queryParam);
-		return this.getWithdrawCoinWithRequestHeader(queryParam, jwt);
+	public Mono<WithdrawAndDeposit> getWithdrawCoinWithoutRequestHeader(ExchangeQuery exchangeQuery) {
+		exchangeQuery.adjustEncode();
+		String jwt = JwtUtils.createJwWithQueryParameters(UPBIT_ACCESS_KEY, UPBIT_SECRET_KEY, exchangeQuery.generateQueryParam());
+		return this.getWithdrawCoinWithRequestHeader(exchangeQuery, jwt);
 	}
 
 	/**
@@ -158,11 +161,12 @@ public class WithdrawService {
 	 * @param jwt
 	 * @return Mono<WithdrawAndDeposit>
 	 */
-	public Mono<WithdrawAndDeposit> getWithdrawCoinWithRequestHeader(String queryParam, String jwt) {
+	public Mono<WithdrawAndDeposit> getWithdrawCoinWithRequestHeader(ExchangeQuery exchangeQuery, String jwt) {
 		return webClientBuilder.baseUrl(UPBIT_API_URL + UPBIT_API_VERSION)
 							   .build()
-							   .get()
-				 			   .uri(ExchangeApiUri.WITHDRAWCOIN.URI + queryParam)
+							   .post()
+				 			   .uri(ExchangeApiUri.WITHDRAWCOIN.URI)
+				 			   .body(BodyInserters.fromObject(exchangeQuery))
 				 			   .header("Authorization", jwt)
 				 			   .exchange()
 				 			   .doOnSuccess(cr -> log.info("X-Forwarded-Uri : " + cr.headers().asHttpHeaders().get("X-Forwarded-Uri").get(0)))
@@ -181,9 +185,10 @@ public class WithdrawService {
 	 * @param queryParam
 	 * @return Mono<WithdrawAndDeposit>
 	 */
-	public Mono<WithdrawAndDeposit> getWithdrawKrwWithoutRequestHeader(String queryParam) {
-		String jwt = JwtUtils.createJwWithQueryParameters(UPBIT_ACCESS_KEY, UPBIT_SECRET_KEY, queryParam);
-		return this.getWithdrawKrwWithRequestHeader(queryParam, jwt);
+	public Mono<WithdrawAndDeposit> getWithdrawKrwWithoutRequestHeader(ExchangeQuery exchangeQuery) {
+		exchangeQuery.adjustEncode();
+		String jwt = JwtUtils.createJwWithQueryParameters(UPBIT_ACCESS_KEY, UPBIT_SECRET_KEY, exchangeQuery.generateQueryParam());
+		return this.getWithdrawKrwWithRequestHeader(exchangeQuery, jwt);
 	}
 
 	/**
@@ -192,11 +197,12 @@ public class WithdrawService {
 	 * @param jwt
 	 * @return Mono<WithdrawAndDeposit>
 	 */
-	public Mono<WithdrawAndDeposit> getWithdrawKrwWithRequestHeader(String queryParam, String jwt) {
+	public Mono<WithdrawAndDeposit> getWithdrawKrwWithRequestHeader(ExchangeQuery exchangeQuery, String jwt) {
 		return webClientBuilder.baseUrl(UPBIT_API_URL + UPBIT_API_VERSION)
 							   .build()
-							   .get()
-				 			   .uri(ExchangeApiUri.WITHDRAWKRW.URI + queryParam)
+							   .post()
+				 			   .uri(ExchangeApiUri.WITHDRAWKRW.URI)
+				 			   .body(BodyInserters.fromObject(exchangeQuery))
 				 			   .header("Authorization", jwt)
 				 			   .exchange()
 				 			   .doOnSuccess(cr -> log.info("X-Forwarded-Uri : " + cr.headers().asHttpHeaders().get("X-Forwarded-Uri").get(0)))
