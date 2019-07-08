@@ -17,7 +17,7 @@ logging:
     root: INFO
     org:
       springframework:
-        batch: DEBUG
+        web: DEBUG
   pattern:
     # console에 찍히는 로그 형식 정의
     console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
